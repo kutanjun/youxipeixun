@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <title>線上熱門遊戲</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            margin: 0;
+            padding: 0;
+            background: url('../images/beijingtu.jpg') no-repeat center center fixed;
+            background-size: cover;
+            font-family: "Microsoft JhengHei", Arial, sans-serif;
+            color: #fff;
+            min-height: 100vh;
+            position: relative;
+        }
+        
+        .overlay {
+            background: rgba(0, 0, 0, 0.6);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+        
+        /* 返回首页按钮样式 - 修改后 */
+        .back-home-container {
+            display: flex;
+            justify-content: flex-end; /* 将按钮容器推到最右侧 */
+            margin: 0 0 20px 0;
+        }
+
+        .back-home {
+            color: #fff;
+            text-decoration: none;
+            padding: 8px 16px;
+            background: #ff4655;
+            border-radius: 4px;
+            transition: background 0.3s;
+        }
+        
+        .back-home:hover {
+            background: #ff6633;
+        }
+
+        .container {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* 调整标题位置 */
+        .title-container {
+            display: flex;
+            justify-content: left;
+            margin: 0 0 40px 0;
+        }
+        
+        
+        .title1 {
+            font-size: 2.5rem;
+            color: #ff6633;
+            font-weight: bold;
+            text-align: left;
+            margin: 0;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            padding: 15px 30px;
+        }
+
+        .valorant-title {
+            text-align: left;
+            padding-left: 10px; /* 可选：添加一些左边距使其看起来更舒适 */
+        }
+
+        .nav {
+            display: flex;
+            justify-content: center;
+            gap: 60px;
+            margin: 0 0 40px 0;
+            font-size: 1.5rem;
+        }
+        
+        .nav span, .nav a {
+            cursor: pointer;
+            padding: 10px 20px;
+            border-radius: 6px;
+            transition: background 0.3s;
+        }
+        
+        .nav span:hover, .nav a:hover{
+            background: rgba(255, 70, 85, 0.3);
+        }
+        
+        .nav span.active, .nav a:hover {
+            background: #ff4655;
+            font-weight: bold;
+        }
+
+        .nav a {
+            color: #fff;
+            text-decoration: none;
+        }        
+
+        .games-container {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 40px;
+            margin-top: 0;
+        }
+        
+        .game-card {
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 10px;
+            padding: 25px;
+            text-align: center;
+            width: 350px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s;
+            
+        }
+        
+        .game-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .game-logo {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 20px;
+            border-radius: 8px;
+        }
+        
+        .game-title {
+            font-size: 1.5rem;
+            color: #ff4655;
+            margin-bottom: 15px;
+            text-align:left;
+        }
+        
+        .game-links {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .game-links a {
+            color: #fff;
+            background: rgba(255, 70, 85, 0.7);
+            padding: 8px 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            transition: background 0.3s;
+        }
+        
+        .game-links a:hover {
+            background: #ff6633;
+            color: #222;
+        }
+
+        .game-links2 {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-top: 40px; /* 向上缩小间距 */
+        }
+        
+        .game-links2 a {
+            color: #fff;
+            background: rgba(255, 70, 85, 0.7);
+            padding: 8px 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            transition: background 0.3s;
+        }
+        
+        .game-links2 a:hover {
+            background: #ff6633;
+            color: #222;
+        }        
+        .maple-logo {
+            border: 2px solid #92DCE5;
+        }
+        
+        .game-links3 {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-top: 50px; /* 向上缩小间距 */
+        }
+        
+        .game-links3 a {
+            color: #fff;
+            background: rgba(255, 70, 85,0.7);
+            padding: 8px 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            transition: background 0.3s;
+        }
+        
+        .game-links3 a:hover {
+            background: #ff6633;
+            color: #222;
+        }        
+        .maple-logo {
+            border: 2px solid #92DCE5;
+        }
+        
+
+        .valorant-logo {
+            border: 2px solid #ff4655;
+            width: 100%; /* 调整图片宽度 */
+            max-width: 500px; /* 设置最大宽度 */
+            margin: 0 auto 20px auto; /* 居中显示 */
+            gap: 10px;
+        }
+        
+        .poe-logo {
+            border: 2px solid #bfa76a;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px;
+        }
+        
+        @media (max-width: 900px) {
+            .games-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .game-card {
+                width: 100%;
+                max-width: 400px;
+            }
+            
+            .nav {
+                gap: 20px;
+                font-size: 1.2rem;
+            }
+            
+            .title1 {
+                font-size: 2rem;
+                padding: 10px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="overlay"></div>
+    
+    <div class="container">
+        <!-- 导航菜单放在最上面 -->
+        <div class="nav">
+            <span class="active">線上遊戲</span>
+            <a href="../mobilegames/shoujiyouxi.html">手機遊戲</span>
+            
+        </div>
+
+        <div class="back-home-container">
+            <a class="back-home" href="../index.html">返回首頁</a>
+        </div>
+        
+        <!-- 标题放在中间位置 -->
+        <div class="title-container">
+            <div class="title1">線上熱門遊戲</div>
+        </div>
+        
+        <!-- 游戏板块 -->
+        <div class="games-container">
+            <!-- Valorant 區塊 -->
+            <div class="game-card">
+                <div class="game-title valorant-title">特戰英豪</div>
+                <img src="../images/tezhanyinghao.png" alt="VALORANT" class="game-logo valorant-logo">
+                <div class="game-links2">
+                    <a href="../onlinegames/valorant-youxijizhi.html" class="valorant-link">遊戲機制</a>
+                    <a href="../onlinegames/valorant-kefulianluo.html" class="valorant-link">客服聯絡</a>
+                    <a href="../onlinegames/valorant-youxishuyu.html" class="valorant-link">遊戲術語</a>
+                    <a href="../onlinegames/valorant-changjianwenti.html" class="valorant-link">常見問題</a>
+                    <a href="../onlinegames/valorant-anlishijian.html" class="valorant-link">案例實踐</a>
+                    <a style="color: #6e6e6e;">敬請期待</a>
+                </div>
+            </div>
+            
+            <!-- MapleStory 區塊 -->
+            <div class="game-card">
+                <img src="../images/xinfengzhigu.png" alt="新楓之谷" class="game-logo maple-logo">
+                <div class="game-links">
+                    <a href="#">遊戲機制</a>
+                    <a href="#">常見糾紛</a>
+                    <a href="#">客服聯絡</a>
+                    <a href="#">專業術語</a>
+                </div>
+            </div>
+
+            <!-- 流亡黯道2 區塊 -->
+            <div class="game-card">
+                <img src="../images/liuwangandao2.png" alt="流亡黯道2" class="game-logo poe-logo">
+                <div class="game-links3">
+                    <a href="#">遊戲機制</a>
+                    <a href="#">常見糾紛</a>
+                    <a href="#">客服聯絡</a>
+                    <a href="#">專業術語</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // 为valorante链接添加点击事件，设置sessionStorage标记
+        document.addEventListener('DOMContentLoaded', function() {
+            const valorantLinks = document.querySelectorAll('.valorant-link');
+            
+            valorantLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    // 设置页面跳转标记
+                    sessionStorage.setItem('valorant-page-navigation', 'true');
+                    // 保存当前滚动位置，以便返回时恢复
+                    sessionStorage.setItem('xianshangyouxi-scroll-position', window.pageYOffset.toString());
+                });
+            });
+            
+            // 恢复滚动位置（如果用户从其他页面返回）
+            const savedScrollPosition = sessionStorage.getItem('xianshangyouxi-scroll-position');
+            if (savedScrollPosition && !sessionStorage.getItem('valorant-page-navigation')) {
+                window.scrollTo(0, parseInt(savedScrollPosition));
+                sessionStorage.removeItem('xianshangyouxi-scroll-position');
+            }
+        });
+    </script>
+</body>
+</html>

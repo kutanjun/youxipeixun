@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <title>特戰英豪 Valorant - 遊戲機制</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            margin: 0;
+            padding: 0;
+            background: url('../images/beijingtu.jpg') no-repeat center center fixed;
+            background-size: cover;
+            font-family: "Microsoft JhengHei", Arial, sans-serif;
+            color: #fff;
+            min-height: 100vh;
+            position: relative;
+        }
+        
+        .overlay {
+            background: rgba(0, 0, 0, 0.6);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+        
+        .container {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: calc(100% - 40px);
+            max-width: 1160px;
+            z-index: 100;
+        }
+        
+        .header-title {
+            font-size: 1.8rem;
+            color: #ff6633;
+            font-weight: bold;
+        }
+        
+        .header-title span {
+            color: #ff6633;
+        }
+        
+        .main-nav {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .main-nav a {
+            color: #fff;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            transition: background 0.3s;
+        }
+        
+        .main-nav a:hover, .main-nav a.active {
+            background: #ff4655;
+        }
+
+        .back-home {
+            color: #fff;
+            text-decoration: none;
+            padding: 8px 16px;
+            background: #ff4655;
+            border-radius: 4px;
+            transition: background 0.3s;
+        }
+        
+        .back-home:hover {
+            background: #ff6633;
+        }
+        
+        .navbar {
+            display: flex;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 90px;
+            position: fixed;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: calc(100% - 40px);
+            max-width: 1160px;
+            z-index: 99;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+        }
+        
+        .navbar a {
+            color: #fff;
+            text-decoration: none;
+            padding: 10px 20px;
+            margin: 0 10px;
+            border-radius: 4px;
+            transition: background 0.3s;
+        }
+        
+        .navbar a.active {
+            background: #ff4655;
+            font-weight: bold;
+        }
+        
+        .navbar a:hover:not(.active) {
+            background: #ff4655;
+        }
+        
+        .content {
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 8px;
+            padding: 30px;
+            margin-top: 160px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+            position: relative;
+            min-height: 500px;
+        }
+        
+        h2 {
+            color: #ff6633;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #ff4655;
+        }
+        
+        p {
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+        
+        table {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            border-collapse: collapse;
+            margin: 20px 0;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        th, td {
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 12px;
+            text-align: left;
+        }
+        
+        th {
+            background: rgba(255, 70, 85, 0.3);
+            color: #ff6633;
+        }
+        
+        a {
+            color: #ff4655;
+            text-decoration: none;
+        }
+        
+        a:hover {
+            text-decoration: underline;
+        }
+        
+        .note {
+            background: rgba(255, 140, 0, 0.2);
+            border-left: 4px solid #ff6633;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+            font-size: 0.95em;
+        }
+        
+        .page-nav {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 98;
+            display: flex;
+            gap: 15px;
+        }
+        
+        .page-nav a {
+            display: inline-block;
+            padding: 12px 24px;
+            background: #ff4655;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background 0.3s;
+            font-weight: bold;
+        }
+        
+        .page-nav a:hover {
+            background: #ff6633;
+            text-decoration: none;
+        }
+        
+        .page-nav a.disabled {
+            background: #666;
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+        
+        .page-nav a.disabled:hover {
+            background: #666;
+        }
+        
+        .page-section {
+            display: none;
+        }
+        
+        .page-section.active {
+            display: block;
+        }
+        
+        .section {
+            margin-bottom: 40px;
+            padding: 20px;
+            background: rgba(15, 25, 35, 0.5);
+            border-radius: 8px;
+            border-left: 4px solid #ff4655;
+        }
+        
+        .section-title {
+            color: #ff6633;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+        
+        .image-container {
+            margin: 20px 0;
+            border: 2px solid #ff4655;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+        }
+        
+        .image-container img {
+            width: 100%;
+            display: block;
+        }
+        
+        .image-caption {
+            text-align: center;
+            padding: 10px;
+            background: rgba(15, 25, 35, 0.8);
+            font-style: italic;
+            color: #ff6633;
+        }
+        
+        .video-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%;
+            height: 0;
+            margin: 25px 0;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+            border: 2px solid #ff4655;
+        }
+        
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        .video-caption {
+            text-align: center;
+            padding: 10px;
+            background: rgba(15, 25, 35, 0.8);
+            font-style: italic;
+            color: #ff6633;
+            border-radius: 0 0 8px 8px;
+        }
+        
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                text-align: center;
+                padding: 10px;
+            }
+            
+            .header-title {
+                margin-bottom: 10px;
+            }
+            
+            .navbar {
+                flex-wrap: wrap;
+                margin-top: 140px;
+            }
+            
+            .navbar a {
+                margin: 5px;
+                padding: 8px 12px;
+            }
+            
+            .content {
+                margin-top: 200px;
+                padding: 20px;
+            }
+            
+            .page-nav {
+                position: relative;
+                bottom: auto;
+                right: auto;
+                text-align: center;
+                margin-top: 30px;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="overlay"></div>
+    
+    <div class="container">
+        <div class="header">
+            <div class="header-title">特戰英豪 <span>Valorant</span></div>
+        
+        <div class="main-nav">
+        <a href="../index.html">首頁</a>
+        <a href="../onlinegames/xianshangyouxi.html" class="active">線上遊戲</a>
+        <a href="../mobilegames/shoujiyouxi.html">手機遊戲</a>
+        </div>
+        </div>
+
+        <div class="navbar">
+            <a href="#" class="active">遊戲機制</a>
+            <a href="../onlinegames/valorant-kefulianluo.html" class="valorant-nav-link">客服聯絡</a>
+            <a href="../onlinegames/valorant-youxishuyu.html" class="valorant-nav-link">遊戲術語</a>
+            <a href="../onlinegames/valorant-changjianwenti.html" class="valorant-nav-link">常見問題</a>
+            <a href="../onlinegames/valorant-anlishijian.html" class="valorant-nav-link">案例實踐</a>
+        </div>
+        
+        <div class="content">
+            <!-- 第一頁：如何註冊及登入 -->
+            <div class="page-section active" id="page-1">
+                <h2>一、如何註冊及登入</h2>
+                <p>1、通過遊戲或網頁，點擊註冊帳號或進行登入，或直接使用Google、Facebook、Apple、Xbox、PlayStation去登入</p>
+                
+                <table>
+                    <tr><th>註冊流程</th></tr>
+                    <tr><td>第一步：輸入電子郵件</td></tr>
+                    <tr><td>第二步：輸入出生日期</td></tr>
+                    <tr><td>第三步：輸入使用者名稱</td></tr>
+                    <tr><td>第四步：輸入登入密碼</td></tr>
+                    <tr><td>第五步：閱讀服務條款並打勾接受註冊</td></tr>
+                </table>
+                
+                <h3>2、遊戲定位</h3>
+                <p>
+                    定位：FPS、第一人稱視角<br>
+                    玩法：以槍戰的第一人稱射擊遊戲為核心展開的遊戲模式<br>
+                    遊戲官網：<a href="https://playvalorant.com/zh-tw/" target="_blank">https://playvalorant.com/zh-tw/</a><br>
+                    查看玩法：<a href="https://www.bilibili.com/video/BV15z411i7U4/?vd_source=a27bb2081267c12d386a2af2e8e5531d" target="_blank">bilibili 影片</a>
+                </p>
+                
+                <div class="note">
+                    *特戰英豪與無契約（又名：瓦洛蘭特）的區別：本質都是拳頭的遊戲，只是無契約約是在大陸的伺服器，故名字不一樣而已<br>
+                    *大陸常用遊戲名詞：打瓦，就是表示玩此款遊戲的意思
+                </div>
+            </div>
+            
+            <!-- 第二頁：遊戲帳號的綁定相關 -->
+            <div class="page-section" id="page-2">
+                <h2>二、遊戲帳號的綁定相關</h2>
+                
+                <!-- 第一部分：Riot ID和個人資訊 -->
+                <div class="section">
+                    <h3 class="section-title">1. Riot ID</h3>
+                    <p>可自行設定ID，讓遊戲內其他人可以搜尋到你進行添加，每90天可以改一次</p>
+                    
+                    <div class="image-container">
+                        <img src="../images/riotid.png">
+                    </div>
+                </div>
+                
+                <div class="section">
+                    <h3 class="section-title">2. 個人資訊</h3>
+                    <p>可自行設定驗證的信箱，而註冊地跟生日是無法更改</p>
+                    
+                    <div class="image-container">
+                        <img src="../images/riotgerenzixun.png" >
+                    </div>
+                </div>
+                
+                <!-- 第二部分：Riot帳號登入 -->
+                <div class="section">
+                    <h3 class="section-title">3. Riot帳號登入</h3>
+                    <p>使用者名稱在註冊之後就無法更改，密碼可隨時更改</p>
+                    
+                    <div class="image-container">
+                        <img src="../images/riotdengru.png" >
+                    </div> 
+                </div>
+                
+                <!-- 第三部分：第三方帳號綁定 -->
+                <div class="section">
+                    <h3 class="section-title">4. 第三方帳號綁定</h3>
+                    <p>註冊之後，可以綁定FB、Google、Apple、Xbox、PlayStation，也可以隨時解除綁定，只要能登入帳號就可以解除綁定</p>
+                    
+                    <div class="note">
+                        *注意：假設是使用FB登入，也能將當前設備進行解除綁定，如果沒有綁定其他方式，那麼此帳號可能就無法找回
+                    </div>
+                    
+                    <h4>已連結的帳號</h4>
+                    <p>連結成功後，這些帳號便可獲取你所提供的Riot Games的部分資料。</p>
+
+                    <div class="image-container">
+                        <img src="../images/riotlianjie.png" >
+                    </div> 
+                    
+                    <p>1）未登入FB情況下可直接解綁FB</p>
+                    
+                    <!-- 视频1：未登入FB情況下可直接解綁FB -->
+                    <div class="video-container">
+                        <iframe src="https://www.youtube.com/embed/bYSR3WYVpq8" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                    <div class="video-caption">未登入FB情況下可直接解綁FB - 操作示範</div>
+
+                    <p>2）使用FB登入也可以解綁FB</p>
+                    
+                    <!-- 视频2：使用FB登入也可以解綁FB -->
+                    <div class="video-container">
+                        <iframe src="https://www.youtube.com/embed/xpgBgPwNJfY" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                    <div class="video-caption">使用FB登入也可以解綁FB - 操作示範</div>
+                </div>
+                
+                <!-- 第五部分：雙重驗證與其他設定 -->
+                <div class="section">
+                    <h3 class="section-title">5. 雙重驗證與其他設定</h3>
+                    <p>雙重驗證即在登入帳號（使用者名稱）的時候是需要驗證，第三方登入不受此影響</p>
+                    <p>第三方的登入會受原本設定而影響，例如Google登入方式有設定雙重驗證，那麼登入的時候也需要進行驗證才可以</p>
+
+                    <div class="image-container">
+                        <img src="../images/riotsheding.png" >
+                    </div> 
+                </div>
+            </div>
+            
+            <!-- 第三頁：如何修改信箱 -->
+            <div class="page-section" id="page-3">
+                <h2>三、如何修改信箱</h2>
+
+                <div class="section">
+                    <h3 class="section-title">☠第一步</h3>   
+                <p>1、直接在電郵地址輸入新的信箱，系統就會發送郵件到新的信箱裡面去了</p>       
+                    <div class="image-container">
+                        <img src="../images/riotxiugaixinxiang1.png">
+                    </div>
+                </div>
+                
+                <div class="section">
+                    <h3 class="section-title">☠第二步</h3>   
+                <p>2、在新的郵件裡面點擊驗證修改即可完成</p>       
+                    <div class="image-container">
+                        <img src="../images/riotxiugaixinxiang2.png">
+                    </div>
+                </div>
+                
+                <div class="section">
+                    <h3 class="section-title">☠第三步</h3>   
+                <p>3、原信箱就會收到一個修改信，這代表對方可以登入帳號修改（可以了解到：如果帳號被盜，買家通常是可以收到修改信通知）</p>       
+                    <div class="image-container">
+                        <img src="../images/riotxiugaixinxiang3.png">
+                    </div>
+                </div>
+            </div>
+
+                        <!-- 第四頁：忘記帳密資料如何找回？ -->
+            <div class="page-section" id="page-4">
+                <h2>四、忘記帳密資料如何找回？</h2>
+
+            <div class="section">
+                <h3 class="section-title">☠忘記使用者名稱找回步驟</h3>   
+            <p>1、在遊戲官網，點擊立刻玩-登入-選擇【無法登入嗎？】</p>    
+            <p>①如果忘記使用者名稱，需要輸入綁定的信箱</p> 
+            <p>第一步：需要輸入綁定的信箱</p> 
+            <p>第二步：輸入信箱之後，會收到一則信件，就可以獲取到使用者名稱</p>       
+                <div class="image-container">
+                    <img src="../images/riotwangjimima1.png">
+                </div>
+                <div class="image-container">
+                    <img src="../images/riotwangjimima2.png">
+                </div>
+            </div>
+            
+            <div class="section">
+                <h3 class="section-title">☠忘記密碼的找回步驟</h3>   
+            <p>②如果忘記密碼的找回方式</p>    
+            <p>第一步：需要使用者名稱</p> 
+            <p>第二步：輸入使用者名稱之後，綁定的信箱會收到一封信件【申請密碼變更】</p>    
+            <p>第二步：點擊信件，可通過獲取的連接去重設密碼</p>      
+                <div class="image-container">
+                    <img src="../images/riotwangjimima3.png">
+                </div>
+                <div class="image-container">
+                    <img src="../images/riotwangjimima4.png">
+                </div>
+            </div>
+            </div>
+        </div>
+        
+        <div class="page-nav">
+            <a href="#" id="prev-page" class="disabled">&lt;&lt; 上一頁</a>
+            <a href="#" id="next-page">下一頁 &gt;&gt;</a>
+        </div>
+    </div>
+    
+    <script>
+        // 頁面導航功能
+        let currentPage = 1;
+        const totalPages = 4;
+        
+        // 從URL hash或localStorage獲取當前頁面
+        function getCurrentPageFromStorage() {
+            // 優先從URL hash獲取
+            const hash = window.location.hash;
+            if (hash && hash.match(/#page-(\d+)/)) {
+                const pageNum = parseInt(hash.match(/#page-(\d+)/)[1]);
+                if (pageNum >= 1 && pageNum <= totalPages) {
+                    return pageNum;
+                }
+            }
+            
+            // 檢查是否是頁面跳轉（使用sessionStorage標記）
+            const isPageNavigation = sessionStorage.getItem('valorant-page-navigation');
+            if (isPageNavigation) {
+                // 清除跳轉標記和當前頁面localStorage狀態
+                sessionStorage.removeItem('valorant-page-navigation');
+                localStorage.removeItem('valorant-youxijizhi-current-page');
+                return 1; // 跳轉時始終返回第一頁
+            }
+            
+            // 檢查是否是同一會話中的刷新（使用sessionStorage標記頁面已訪問）
+            const hasVisitedInSession = sessionStorage.getItem('valorant-youxijizhi-visited');
+            if (!hasVisitedInSession) {
+                // 第一次訪問此頁面（新會話或新標籤），標記為已訪問並返回第一頁
+                sessionStorage.setItem('valorant-youxijizhi-visited', 'true');
+                localStorage.removeItem('valorant-youxijizhi-current-page'); // 清除舊狀態
+                return 1;
+            }
+            
+            // 同一會話中的刷新，從localStorage獲取狀態
+            const savedPage = localStorage.getItem('valorant-youxijizhi-current-page');
+            if (savedPage) {
+                const pageNum = parseInt(savedPage);
+                if (pageNum >= 1 && pageNum <= totalPages) {
+                    return pageNum;
+                }
+            }
+            
+            return 1; // 默認第一頁
+        }
+        
+        // 保存當前頁面狀態
+        function saveCurrentPage(pageNum) {
+            // 保存到URL hash
+            window.location.hash = `page-${pageNum}`;
+            // 保存到localStorage
+            localStorage.setItem('valorant-youxijizhi-current-page', pageNum.toString());
+        }
+        
+        function showPage(pageNum) {
+            // 隱藏所有頁面
+            document.querySelectorAll('.page-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // 顯示指定頁面
+            document.getElementById(`page-${pageNum}`).classList.add('active');
+            
+            // 更新導航按鈕狀態
+            const prevBtn = document.getElementById('prev-page');
+            const nextBtn = document.getElementById('next-page');
+            
+            if (pageNum === 1) {
+                prevBtn.classList.add('disabled');
+            } else {
+                prevBtn.classList.remove('disabled');
+            }
+            
+            if (pageNum === totalPages) {
+                nextBtn.classList.add('disabled');
+            } else {
+                nextBtn.classList.remove('disabled');
+            }
+            
+            currentPage = pageNum;
+            // 保存當前頁面狀態
+            saveCurrentPage(pageNum);
+            
+            // 分頁切換時置頂
+            setTimeout(() => {
+                window.scrollTo(0, 0);
+                document.documentElement.scrollTop = 0;
+                document.body.scrollTop = 0;
+            }, 50);
+        }
+        
+        // 上一頁按鈕
+        document.getElementById('prev-page').addEventListener('click', function(e) {
+            e.preventDefault();
+            if (currentPage > 1) {
+                showPage(currentPage - 1);
+            }
+        });
+        
+        // 下一頁按鈕
+        document.getElementById('next-page').addEventListener('click', function(e) {
+            e.preventDefault();
+            if (currentPage < totalPages) {
+                showPage(currentPage + 1);
+            }
+        });
+        
+        // 鍵盤導航
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowLeft' && currentPage > 1) {
+                showPage(currentPage - 1);
+            } else if (e.key === 'ArrowRight' && currentPage < totalPages) {
+                showPage(currentPage + 1);
+            }
+        });
+        
+        // 監聽hash變化（當用戶點擊瀏覽器前進後退按鈕時）
+        window.addEventListener('hashchange', function() {
+            const pageNum = getCurrentPageFromStorage();
+            if (pageNum !== currentPage) {
+                showPage(pageNum);
+            }
+        });
+        
+        // 初始化 - 從保存的狀態恢復頁面
+        document.addEventListener('DOMContentLoaded', function() {
+            // 為導航鏈接添加sessionStorage標記
+            const valorantNavLinks = document.querySelectorAll('.valorant-nav-link');
+            valorantNavLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    sessionStorage.setItem('valorant-page-navigation', 'true');
+                });
+            });
+            
+            const savedPage = getCurrentPageFromStorage();
+            showPage(savedPage);
+            
+            // 檢查是否需要置頂（頁面跳轉或新會話訪問）
+            const shouldScrollToTop = sessionStorage.getItem('valorant-page-navigation') || 
+                                    !sessionStorage.getItem('valorant-youxijizhi-visited-before-this-load');
+            
+            if (shouldScrollToTop) {
+                // 使用setTimeout確保頁面完全載入後再置頂
+                setTimeout(() => {
+                    window.scrollTo(0, 0);
+                    document.documentElement.scrollTop = 0; // 兼容性處理
+                    document.body.scrollTop = 0; // 兼容性處理
+                }, 100);
+                // 標記本次加載已處理
+                sessionStorage.setItem('valorant-youxijizhi-visited-before-this-load', 'true');
+            }
+        });
+        
+        // 如果DOM已經加載完成，直接初始化
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', function() {
+                const savedPage = getCurrentPageFromStorage();
+                showPage(savedPage);
+            });
+        } else {
+            const savedPage = getCurrentPageFromStorage();
+            showPage(savedPage);
+        }
+    </script>
+</body>
+</html>

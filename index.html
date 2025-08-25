@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <title>熱門遊戲培訓</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            margin: 0;
+            padding: 0;
+            background: url('./images/beijingtu.jpg') no-repeat center center fixed;
+            background-size: cover;
+            font-family: "Microsoft JhengHei", Arial, sans-serif;
+            color: #fff;
+            min-height: 100vh;
+            position: relative;
+        }
+        
+        .overlay {
+            background: rgba(0, 0, 0, 0.6);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+        
+        .container {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* 头部样式 */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 8px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+        }
+        
+        .logo {
+            font-size: 2rem;
+            color: #ff6633;
+            font-weight: bold;
+        }
+        
+        .main-nav {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .main-nav a {
+            color: #fff;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            transition: background 0.3s;
+        }
+        
+        .main-nav a:hover, .main-nav a.active {
+            background: #ff4655;
+        }
+        
+        /* 主标题样式 */
+        .main-title {
+            text-align: center;
+            margin: 30px 0 50px 0;
+        }
+        
+        .main-title h1 {
+            font-size: 3rem;
+            color: #ff6633;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            margin-bottom: 15px;
+        }
+        
+        .main-title p {
+            font-size: 1.2rem;
+            color: #ddd;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+        
+        /* 功能区块样式 */
+        .features {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin: 40px 0;
+        }
+        
+        .feature-card {
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 10px;
+            padding: 25px;
+            text-align: center;
+            width: 300px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s;
+            border-left: 4px solid #ff4655;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: #ff4655;
+        }
+        
+        .feature-title {
+            font-size: 1.5rem;
+            color: #ff4655;
+            margin-bottom: 15px;
+        }
+        
+        .feature-desc {
+            color: #ddd;
+            line-height: 1.6;
+        }
+        
+        /* 热门游戏区块 */
+        .section-title {
+            font-size: 2.2rem;
+            color: #ff6633;
+            text-align: center;
+            margin: 50px 0 30px 0;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            padding-bottom: 10px;
+            border-bottom: 2px solid #ff4655;
+        }
+        
+        .games-container {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 40px;
+            margin-top: 30px;
+        }
+        
+        .game-card {
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 10px;
+            padding: 25px;
+            text-align: center;
+            width: 350px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s;
+        }
+        
+        .game-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .game-logo {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 20px;
+            border-radius: 8px;
+        }
+        
+        .game-title {
+            font-size: 1.5rem;
+            color: #ff4655;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        /* 特战英豪标题居左 */
+        .game-card.valorant-card .game-title {
+            text-align: left;
+            padding-left: 10px;
+            border-left: 3px solid #ff4655;
+        }
+        
+        .game-links {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .game-links a {
+            color: #fff;
+            background: rgba(255, 70, 85, 0.7);
+            padding: 8px 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            transition: background 0.3s;
+        }
+        
+        .game-links a:hover {
+            background: #ff6633;
+        }
+        
+        .maple-logo {
+            border: 2px solid #92DCE5;
+        }
+        
+        .valorant-logo {
+            border: 2px solid #ff4655;
+        }
+        
+        .poe-logo {
+            border: 2px solid #bfa76a;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px;
+        }
+        
+        /* 页脚样式 */
+        .footer {
+            margin-top: auto;
+            text-align: center;
+            padding: 20px;
+            color: #ddd;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 8px;
+            margin-top: 50px;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 900px) {
+            .header {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .games-container, .features {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .game-card, .feature-card {
+                width: 100%;
+                max-width: 400px;
+            }
+            
+            .main-title h1 {
+                font-size: 2.2rem;
+            }
+            
+            .section-title {
+                font-size: 1.8rem;
+            }
+            
+            /* 移动端特战英豪标题居中 */
+            .game-card.valorant-card .game-title {
+                text-align: center;
+                padding-left: 0;
+                border-left: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="overlay"></div>
+    
+    <div class="container">
+        <!-- 头部导航 -->
+        <div class="header">
+            <div class="logo">遊戲培訓庫</div>
+            <div class="main-nav">
+                <a href="#" class="active">首頁</a>
+                <a href="./onlinegames/xianshangyouxi.html">線上遊戲</a>
+                <a href="./mobilegames/shoujiyouxi.html">手機遊戲</a>
+            </div>
+        </div>
+        
+        <!-- 主标题 -->
+        <div class="main-title">
+            <h1>8591熱門遊戲培訓</h1>
+            <p>提供熱門遊戲的專業知識、糾紛處理思路，幫助您成為8591更專業的客服人員</p>
+        </div>
+        
+        <!-- 功能特色 -->
+        <div class="features">
+            <div class="feature-card">
+                <div class="feature-icon">🎮</div>
+                <h3 class="feature-title">遊戲機制解析</h3>
+                <p class="feature-desc">深入解析各遊戲機制，幫助您快速掌握遊戲機制的核心內容</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">⚖️</div>
+                <h3 class="feature-title">糾紛處理指南</h3>
+                <p class="feature-desc">提供常見交易糾紛處理方法與官方聯絡流程，鞏固你的處理思路</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">📚</div>
+                <h3 class="feature-title">專業術語庫</h3>
+                <p class="feature-desc">收錄各遊戲專業術語與解釋，讓您快速秒懂會員的表達</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

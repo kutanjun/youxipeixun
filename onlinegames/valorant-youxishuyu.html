@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <title>特戰英豪 Valorant - 遊戲術語</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            margin: 0;
+            padding: 0;
+            background: url('../images/beijingtu.jpg') no-repeat center center fixed;
+            background-size: cover;
+            font-family: "Microsoft JhengHei", Arial, sans-serif;
+            color: #fff;
+            min-height: 100vh;
+            position: relative;
+        }
+        
+        .overlay {
+            background: rgba(0, 0, 0, 0.6);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+        
+        .container {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: calc(100% - 40px);
+            max-width: 1160px;
+            z-index: 100;
+        }
+        
+        .header-title {
+            font-size: 1.8rem;
+            color: #ff6633;
+            font-weight: bold;
+        }
+        
+        .header-title span {
+            color: #ff6633;
+        }
+        
+        .main-nav {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .main-nav a {
+            color: #fff;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            transition: background 0.3s;
+        }
+        
+        .main-nav a:hover, .main-nav a.active {
+            background: #ff4655;
+        }
+
+        .back-home {
+            color: #fff;
+            text-decoration: none;
+            padding: 8px 16px;
+            background: #ff4655;
+            border-radius: 4px;
+            transition: background 0.3s;
+        }
+        
+        .back-home:hover {
+            background: #ff6633;
+        }
+        
+        .navbar {
+            display: flex;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 90px;
+            position: fixed;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: calc(100% - 40px);
+            max-width: 1160px;
+            z-index: 99;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+        }
+        
+        .navbar a {
+            color: #fff;
+            text-decoration: none;
+            padding: 10px 20px;
+            margin: 0 10px;
+            border-radius: 4px;
+            transition: background 0.3s;
+        }
+        
+        .navbar a.active {
+            background: #ff4655;
+            font-weight: bold;
+        }
+        
+        .navbar a:hover:not(.active) {
+            background: #ff4655;
+        }
+        
+        .content {
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 8px;
+            padding: 30px;
+            margin-top: 160px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+            position: relative;
+            min-height: 500px;
+        }
+        
+        h2 {
+            color: #ff6633;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #ff4655;
+        }
+        
+        p {
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+        
+        table {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            border-collapse: collapse;
+            margin: 20px 0;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        th, td {
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 12px;
+            text-align: left;
+        }
+        
+        th {
+            background: rgba(255, 70, 85, 0.3);
+            color: #ff6633;
+        }
+        
+        a {
+            color: #ff4655;
+            text-decoration: none;
+        }
+        
+        a:hover {
+            text-decoration: underline;
+        }
+        
+        .note {
+            background: rgba(255, 140, 0, 0.2);
+            border-left: 4px solid #ff6633;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+            font-size: 0.95em;
+        }
+        
+        .page-nav {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 98;
+            display: flex;
+            gap: 15px;
+        }
+        
+        .page-nav a {
+            display: inline-block;
+            padding: 12px 24px;
+            background: #ff4655;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background 0.3s;
+            font-weight: bold;
+        }
+        
+        .page-nav a:hover {
+            background: #ff6633;
+            text-decoration: none;
+        }
+        
+        .page-nav a.disabled {
+            background: #666;
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+        
+        .page-nav a.disabled:hover {
+            background: #666;
+        }
+        
+        .page-section {
+            display: none;
+        }
+        
+        .page-section.active {
+            display: block;
+        }
+        
+        .section {
+            margin-bottom: 40px;
+            padding: 20px;
+            background: rgba(15, 25, 35, 0.5);
+            border-radius: 8px;
+            border-left: 4px solid #ff4655;
+        }
+        
+        .section-title {
+            color: #ff6633;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+        
+        .image-container {
+            margin: 20px 0;
+            border: 2px solid #ff4655;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+        }
+        
+        .image-container img {
+            width: 50%;
+            display: block;
+        }
+        
+        .image-caption {
+            text-align: center;
+            padding: 10px;
+            background: rgba(15, 25, 35, 0.8);
+            font-style: italic;
+            color: #ff6633;
+        }
+        
+        .video-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%;
+            height: 0;
+            margin: 25px 0;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+            border: 2px solid #ff4655;
+        }
+        
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        .video-caption {
+            text-align: center;
+            padding: 10px;
+            background: rgba(15, 25, 35, 0.8);
+            font-style: italic;
+            color: #ff6633;
+            border-radius: 0 0 8px 8px;
+        }
+        
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                text-align: center;
+                padding: 10px;
+            }
+            
+            .header-title {
+                margin-bottom: 10px;
+            }
+            
+            .navbar {
+                flex-wrap: wrap;
+                margin-top: 140px;
+            }
+            
+            .navbar a {
+                margin: 5px;
+                padding: 8px 12px;
+            }
+            
+            .content {
+                margin-top: 200px;
+                padding: 20px;
+            }
+            
+            .page-nav {
+                position: relative;
+                bottom: auto;
+                right: auto;
+                text-align: center;
+                margin-top: 30px;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="overlay"></div>
+    
+    <div class="container">
+        <div class="header">
+            <div class="header-title">特戰英豪 <span>Valorant</span></div>
+        
+        <div class="main-nav">
+        <a href="../index.html">首頁</a>
+        <a href="../onlinegames/xianshangyouxi.html" class="active">線上遊戲</a>
+        <a href="../mobilegames/shoujiyouxi.html">手機遊戲</a>
+        </div>
+        </div>
+
+        <div class="navbar">
+            <a href="../onlinegames/valorant-youxijizhi.html" class="valorant-nav-link">遊戲機制</a>
+            <a href="../onlinegames/valorant-kefulianluo.html" class="valorant-nav-link">客服聯絡</a>
+            <a href="#" class="active">遊戲術語</a>
+            <a href="../onlinegames/valorant-changjianwenti.html" class="valorant-nav-link">常見問題</a>
+            <a href="../onlinegames/valorant-anlishijian.html" class="valorant-nav-link">案例實踐</a>
+        </div>
+        
+        <div class="content">
+            <!-- 第一頁：特戰英豪不合理的一面 -->
+            <div class="page-section active" id="page-1">
+                <h2>一、特戰英豪不合常理的一面</h2>
+             <div class="section">
+                <h3 class="section-title">☠客戶端與網頁端登入錯誤的提示差異</h3>   
+            <p>買家反饋帳密被更改資料，通過PC端登入之後提示“系統中沒有與你的登入資訊相符的帳號”</p> 
+            <p>買家懷疑是原帳主或賣家把【使用者名稱】進行更改，導致帳號現在被找回無法登入</p> 
+            <p style="color: #f44336;">但其實本質【使用者名稱】是無法更改，只是輸入密碼不對</p>
+            <p>客戶端會提示沒有相符的帳號，但如果通過網頁端登入只是會顯示使用者名稱或密碼可能有誤</p>
+
+                <!-- 修改图片布局为并排显示 -->
+                <div class="images-row">
+                    <div class="image-container">
+                        <img src="../images/riotjiaoyizhuyishixiang2.png">
+                    </div>
+                    <div class="image-container">
+                        <img src="../images/riotjiaoyizhuyishixiang3.png">
+                    </div>
+                </div>
+            </div>
+
+            </div>
+            
+ 
+        </div>
+        
+        <div class="page-nav">
+            <a href="#" id="prev-page" class="disabled">&lt;&lt; 上一頁</a>
+            <a href="#" id="next-page">下一頁 &gt;&gt;</a>
+        </div>
+    </div>
+    
+    <script>
+        // 頁面導航功能
+        let currentPage = 1;
+        const totalPages = 1;
+        
+        // 從URL hash或localStorage獲取當前頁面
+        function getCurrentPageFromStorage() {
+            // 優先從URL hash獲取
+            const hash = window.location.hash;
+            if (hash && hash.match(/#page-(\d+)/)) {
+                const pageNum = parseInt(hash.match(/#page-(\d+)/)[1]);
+                if (pageNum >= 1 && pageNum <= totalPages) {
+                    return pageNum;
+                }
+            }
+            
+            // 檢查是否是頁面跳轉（使用sessionStorage標記）
+            const isPageNavigation = sessionStorage.getItem('valorant-page-navigation');
+            if (isPageNavigation) {
+                // 清除跳轉標記和當前頁面localStorage狀態
+                sessionStorage.removeItem('valorant-page-navigation');
+                localStorage.removeItem('valorant-youxishuyu-current-page');
+                return 1; // 跳轉時始終返回第一頁
+            }
+            
+            // 檢查是否是同一會話中的刷新（使用sessionStorage標記頁面已訪問）
+            const hasVisitedInSession = sessionStorage.getItem('valorant-youxishuyu-visited');
+            if (!hasVisitedInSession) {
+                // 第一次訪問此頁面（新會話或新標籤），標記為已訪問並返回第一頁
+                sessionStorage.setItem('valorant-youxishuyu-visited', 'true');
+                localStorage.removeItem('valorant-youxishuyu-current-page'); // 清除舊狀態
+                return 1;
+            }
+            
+            // 同一會話中的刷新，從localStorage獲取狀態
+            const savedPage = localStorage.getItem('valorant-youxishuyu-current-page');
+            if (savedPage) {
+                const pageNum = parseInt(savedPage);
+                if (pageNum >= 1 && pageNum <= totalPages) {
+                    return pageNum;
+                }
+            }
+            
+            return 1; // 默認第一頁
+        }
+        
+        // 保存當前頁面狀態
+        function saveCurrentPage(pageNum) {
+            // 保存到URL hash
+            window.location.hash = `page-${pageNum}`;
+            // 保存到localStorage
+            localStorage.setItem('valorant-youxishuyu-current-page', pageNum.toString());
+        }
+        
+        function showPage(pageNum) {
+            // 隱藏所有頁面
+            document.querySelectorAll('.page-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // 顯示指定頁面
+            document.getElementById(`page-${pageNum}`).classList.add('active');
+            
+            // 更新導航按鈕狀態
+            const prevBtn = document.getElementById('prev-page');
+            const nextBtn = document.getElementById('next-page');
+            
+            if (pageNum === 1) {
+                prevBtn.classList.add('disabled');
+            } else {
+                prevBtn.classList.remove('disabled');
+            }
+            
+            if (pageNum === totalPages) {
+                nextBtn.classList.add('disabled');
+            } else {
+                nextBtn.classList.remove('disabled');
+            }
+            
+            currentPage = pageNum;
+            // 保存當前頁面狀態
+            saveCurrentPage(pageNum);
+            
+            // 分頁切換時置頂
+            setTimeout(() => {
+                window.scrollTo(0, 0);
+                document.documentElement.scrollTop = 0;
+                document.body.scrollTop = 0;
+            }, 50);
+        }
+        
+        // 上一頁按鈕
+        document.getElementById('prev-page').addEventListener('click', function(e) {
+            e.preventDefault();
+            if (currentPage > 1) {
+                showPage(currentPage - 1);
+            }
+        });
+        
+        // 下一頁按鈕
+        document.getElementById('next-page').addEventListener('click', function(e) {
+            e.preventDefault();
+            if (currentPage < totalPages) {
+                showPage(currentPage + 1);
+            }
+        });
+        
+        // 鍵盤導航
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowLeft' && currentPage > 1) {
+                showPage(currentPage - 1);
+            } else if (e.key === 'ArrowRight' && currentPage < totalPages) {
+                showPage(currentPage + 1);
+            }
+        });
+        
+        // 監聽hash變化（當用戶點擊瀏覽器前進後退按鈕時）
+        window.addEventListener('hashchange', function() {
+            const pageNum = getCurrentPageFromStorage();
+            if (pageNum !== currentPage) {
+                showPage(pageNum);
+            }
+        });
+        
+        // 初始化 - 從保存的狀態恢復頁面
+        document.addEventListener('DOMContentLoaded', function() {
+            // 為導航鏈接添加sessionStorage標記
+            const valorantNavLinks = document.querySelectorAll('.valorant-nav-link');
+            valorantNavLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    sessionStorage.setItem('valorant-page-navigation', 'true');
+                });
+            });
+            
+            const savedPage = getCurrentPageFromStorage();
+            showPage(savedPage);
+            
+            // 檢查是否需要置頂（頁面跳轉或新會話訪問）
+            const shouldScrollToTop = sessionStorage.getItem('valorant-page-navigation') || 
+                                    !sessionStorage.getItem('valorant-youxishuyu-visited-before-this-load');
+            
+            if (shouldScrollToTop) {
+                // 使用setTimeout確保頁面完全載入後再置頂
+                setTimeout(() => {
+                    window.scrollTo(0, 0);
+                    document.documentElement.scrollTop = 0; // 兼容性處理
+                    document.body.scrollTop = 0; // 兼容性處理
+                }, 100);
+                // 標記本次加載已處理
+                sessionStorage.setItem('valorant-youxishuyu-visited-before-this-load', 'true');
+            }
+        });
+        
+        // 如果DOM已經加載完成，直接初始化
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', function() {
+                const savedPage = getCurrentPageFromStorage();
+                showPage(savedPage);
+            });
+        } else {
+            const savedPage = getCurrentPageFromStorage();
+            showPage(savedPage);
+        }
+    </script>
+</body>
+</html>

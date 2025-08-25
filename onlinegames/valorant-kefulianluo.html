@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <title>特戰英豪 Valorant - 客服聯絡</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            margin: 0;
+            padding: 0;
+            background: url('../images/beijingtu.jpg') no-repeat center center fixed;
+            background-size: cover;
+            font-family: "Microsoft JhengHei", Arial, sans-serif;
+            color: #fff;
+            min-height: 100vh;
+            position: relative;
+        }
+        
+        .overlay {
+            background: rgba(0, 0, 0, 0.6);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+        
+        .container {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: calc(100% - 40px);
+            max-width: 1160px;
+            z-index: 100;
+        }
+        
+        .header-title {
+            font-size: 1.8rem;
+            color: #ff6633;
+            font-weight: bold;
+        }
+        
+        .header-title span {
+            color: #ff6633;
+        }
+        
+        .main-nav {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .main-nav a {
+            color: #fff;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            transition: background 0.3s;
+        }
+        
+        .main-nav a:hover, .main-nav a.active {
+            background: #ff4655;
+        }
+
+        .back-home {
+            color: #fff;
+            text-decoration: none;
+            padding: 8px 16px;
+            background: #ff4655;
+            border-radius: 4px;
+            transition: background 0.3s;
+        }
+        
+        .back-home:hover {
+            background: #ff6633;
+        }
+        
+        .navbar {
+            display: flex;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 90px;
+            position: fixed;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: calc(100% - 40px);
+            max-width: 1160px;
+            z-index: 99;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+        }
+        
+        .navbar a {
+            color: #fff;
+            text-decoration: none;
+            padding: 10px 20px;
+            margin: 0 10px;
+            border-radius: 4px;
+            transition: background 0.3s;
+        }
+        
+        .navbar a.active {
+            background: #ff4655;
+            font-weight: bold;
+        }
+        
+        .navbar a:hover:not(.active) {
+            background: #ff4655;
+        }
+        
+        .content {
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 8px;
+            padding: 30px;
+            margin-top: 160px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+            position: relative;
+            min-height: 500px;
+        }
+        
+        h2 {
+            color: #ff6633;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #ff4655;
+        }
+        
+        p {
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+        
+        table {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            border-collapse: collapse;
+            margin: 20px 0;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        th, td {
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 12px;
+            text-align: left;
+        }
+        
+        th {
+            background: rgba(255, 70, 85, 0.3);
+            color: #ff6633;
+        }
+        
+        a {
+            color: #ff4655;
+            text-decoration: none;
+        }
+        
+        a:hover {
+            text-decoration: underline;
+        }
+        
+        .note {
+            background: rgba(255, 140, 0, 0.2);
+            border-left: 4px solid #ff6633;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+            font-size: 0.95em;
+        }
+        
+        .page-nav {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 98;
+            display: flex;
+            gap: 15px;
+        }
+        
+        .page-nav a {
+            display: inline-block;
+            padding: 12px 24px;
+            background: #ff4655;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background 0.3s;
+            font-weight: bold;
+        }
+        
+        .page-nav a:hover {
+            background: #ff6633;
+            text-decoration: none;
+        }
+        
+        .page-nav a.disabled {
+            background: #666;
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+        
+        .page-nav a.disabled:hover {
+            background: #666;
+        }
+        
+        .page-section {
+            display: none;
+        }
+        
+        .page-section.active {
+            display: block;
+        }
+        
+        .section {
+            margin-bottom: 40px;
+            padding: 20px;
+            background: rgba(15, 25, 35, 0.5);
+            border-radius: 8px;
+            border-left: 4px solid #ff4655;
+        }
+        
+        .section-title {
+            color: #ff6633;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+        
+        .image-container {
+            margin: 20px 0;
+            border: 2px solid #ff4655;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+        }
+        
+        .image-container img {
+            width: 100%;
+            display: block;
+        }
+        
+        .image-caption {
+            text-align: center;
+            padding: 10px;
+            background: rgba(15, 25, 35, 0.8);
+            font-style: italic;
+            color: #ff6633;
+        }
+        
+        .video-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%;
+            height: 0;
+            margin: 25px 0;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+            border: 2px solid #ff4655;
+        }
+        
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        .video-caption {
+            text-align: center;
+            padding: 10px;
+            background: rgba(15, 25, 35, 0.8);
+            font-style: italic;
+            color: #ff6633;
+            border-radius: 0 0 8px 8px;
+        }
+
+        /* 图片画廊样式 */
+        .image-gallery {
+            position: relative;
+            margin: 20px 0;
+        }
+        
+        .gallery-image {
+            width: 100%;
+            display: block;
+            border: 2px solid #ff4655;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+        }
+        
+        .gallery-image img {
+            width: 100%;
+            display: block;
+        }
+        
+        .gallery-nav {
+            display: flex;
+            justify-content: center;
+            margin-top: 15px;
+            gap: 15px;
+        }
+        
+        .gallery-btn {
+            padding: 8px 16px;
+            background: #ff4655;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.3s;
+            font-weight: bold;
+        }
+        
+        .gallery-btn:hover {
+            background: #ff6633;
+        }
+        
+        .gallery-btn:disabled {
+            background: #666;
+            cursor: not-allowed;
+        }
+
+        .image-counter {
+            text-align: center;
+            margin-top: 10px;
+            color: #ff6633;
+            font-weight: bold;
+        }
+
+
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                text-align: center;
+                padding: 10px;
+            }
+            
+            .header-title {
+                margin-bottom: 10px;
+            }
+            
+            .navbar {
+                flex-wrap: wrap;
+                margin-top: 140px;
+            }
+            
+            .navbar a {
+                margin: 5px;
+                padding: 8px 12px;
+            }
+            
+            .content {
+                margin-top: 200px;
+                padding: 20px;
+            }
+            
+            .page-nav {
+                position: relative;
+                bottom: auto;
+                right: auto;
+                text-align: center;
+                margin-top: 30px;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="overlay"></div>
+    
+    <div class="container">
+        <div class="header">
+            <div class="header-title">特戰英豪 <span>Valorant</span></div>
+        
+        <div class="main-nav">
+        <a href="../index.html">首頁</a>
+        <a href="../onlinegames/xianshangyouxi.html" class="active">線上遊戲</a>
+        <a href="../mobilegames/shoujiyouxi.html">手機遊戲</a>
+        </div>
+        </div>
+
+        <div class="navbar">
+            <a href="../onlinegames/valorant-youxijizhi.html" class="valorant-nav-link">遊戲機制</a>
+            <a href="#" class="active">客服聯絡</a>
+            <a href="../onlinegames/valorant-youxishuyu.html" class="valorant-nav-link">遊戲術語</a>
+            <a href="../onlinegames/valorant-changjianwenti.html" class="valorant-nav-link">常見問題</a>
+            <a href="../onlinegames/valorant-anlishijian.html" class="valorant-nav-link">案例實踐</a>
+        </div>
+        
+        <div class="content">
+            <!-- 第一頁：寄信流程 -->
+            <div class="page-section active" id="page-1">
+                <h2>一、產生交易糾紛，買家如何寫信給官方找回帳號？</h2>
+                <div class="section">
+                <h3 class="section-title">☠寄信流程</h3>   
+                <p>1、重要問題點：</p> 
+                <p>遊戲官方主要認註冊時的相關資料，特別是初始信箱，可能初始信箱沒有對的話，就算其他資料填寫正確，也不一定能處理</p> 
+                <p style="color: #f44336;font-weight: bold;">所以如果產生交易糾紛時，賣家未曾提供過初始信箱資料，我們是沒有必要引導買家去寫信給遊戲官方</p>
+                
+                <p>2、若有初始資料時，可按照極速流程寫信給遊戲官方</p>
+                <p>遊戲官方主要認註冊時的相關資料，特別是初始信箱，可能初始信箱沒有對的話，就算其他資料填寫正確，也不一定能處理</p>
+                
+                <!-- 修改为同行显示 -->
+                <div class="no-wrap">①登入至特戰英豪官網：選擇提交表單-特戰英豪的遊戲
+                    <span class="inline-link">
+                        <a href="https://support.riotgames.com/hc/zh-tw" target="_blank">【特戰英豪】</a>
+                    </span>
+                </div>
+                
+                <p>②選擇問題類型-復原我的帳號</p> 
+                <p>③按照官網表單內容，填寫帳號內的相關信息，例如初始信箱等資料</p>
+                <p>④填寫完之後，官方會回覆到你留下的信箱，並等待結果</p>
+                <p>⑤如果審核通過，官方會回覆兩封信極速件，一封是回覆告知結果，一封是可操作修改帳密的連接</p>
+                <p>⑥一旦審核通過，官方是直接將原本的信箱恢復到初始信箱，並且舊的信箱不會有任何通知</p>
+
+                <!-- 第一個图片画廊 -->
+                <div class="image-gallery">
+                    <div class="gallery-image">
+                        <img id="gallery-img" src="../images/riotjixinliucheng1.png" alt="寄信流程步骤图">
+                    </div>
+                    <div class="image-counter">
+                        <span id="current-img">1</span> / <span id="total-imgs">3</span>
+                    </div>
+                    <div class="gallery-nav">
+                        <button class="gallery-btn" id="prev-btn" disabled>上一張</button>
+                        <button class="gallery-btn" id="next-btn">下一張</button>
+                    </div>
+                </div>
+            </div>
+            </div>
+            
+            <!-- 第二頁：復原工具的使用 -->
+            <div class="page-section" id="page-2">
+                <h2>二、通過帳號復原工具找回</h2>
+                
+             <div class="section">
+                <h3 class="section-title">☠寄信流程</h3>   
+                <div class="no-wrap">1、第一步
+                    <span class="inline-link">
+                        <a href="https://support-valorant.riotgames.com/hc/zh-tw/articles/360046229573-%E5%B8%B3%E8%99%9F%E5%BE%A9%E5%8E%9F?tref=ticketrelatedarticles" target="_blank">打開查看【復原工具】</a>
+                    </span>
+                </div>
+                <p>①需要填寫使用者名稱或者Riot ID或召喚師名稱</p> 
+                <p>②回答填寫的問題內容</p> 
+                <p>③填寫註冊時的出生日期</p> 
+                
+                <p>2、第二步</p>
+                <p>①填寫註冊時的初始信箱</p>
+                <p>②選擇是否能使用該信箱</p>
+                <p>③此帳號中還使用過哪些電子郵件信箱</p>
+                <p>④是否能登入這些電子郵件信箱</p>
+
+                <p>3、第三步</p>
+                <p>填寫寄送帳號復原資訊的電子郵件信箱</p>
+
+                <p>4、第四步</p>
+                <p>等待官方的處理結果，如果認為你還不是帳號持有人，就需要通過表單填寫更詳細的資料來確認</p>
+                <span class="answer-mark">結論：無論是提交表單還是帳號復原工具，都需要用到初始信箱資料</span>
+                
+
+                <!-- 第二個图片画廊 -->
+                <div class="image-gallery">
+                    <div class="gallery-image">
+                        <img id="gallery-img2" src="../images/riotfuyuangongju1.png" alt="寄信流程步骤图">
+                    </div>
+                    <div class="image-counter">
+                        <span id="current-img2">1</span> / <span id="total-imgs2">2</span>
+                    </div>
+                    <div class="gallery-nav">
+                        <button class="gallery-btn" id="prev-btn2" disabled>上一張</button>
+                        <button class="gallery-btn" id="next-btn2">下一張</button>
+                    </div>
+                </div>
+            </div>
+                </div>
+
+            </div>
+            
+        </div>
+        
+        <div class="page-nav">
+            <a href="#" id="prev-page" class="disabled">&lt;&lt; 上一頁</a>
+            <a href="#" id="next-page">下一頁 &gt;&gt;</a>
+        </div>
+    </div>
+    
+    <script>
+        // 第一個图片画廊功能
+        document.addEventListener('DOMContentLoaded', function() {
+            const images = [
+                '../images/riotjixinliucheng1.png',
+                '../images/riotjixinliucheng2.png',
+                '../images/riotjixinliucheng3.png',
+                '../images/riotjixinliucheng4.png',
+                '../images/riotjixinliucheng5.png',
+                '../images/riotjixinliucheng6.png',
+                '../images/riotjixinliucheng7.png',
+                '../images/riotjixinliucheng8.png',
+                '../images/riotjixinliucheng9.png'
+            ];
+            
+            const galleryImg = document.getElementById('gallery-img');
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            const currentImgSpan = document.getElementById('current-img');
+            const totalImgsSpan = document.getElementById('total-imgs');
+            
+            let currentIndex = 0;
+            
+            // 设置总图片数
+            totalImgsSpan.textContent = images.length;
+            
+            // 更新按钮状态
+            function updateButtonState() {
+                prevBtn.disabled = currentIndex === 0;
+                nextBtn.disabled = currentIndex === images.length - 1;
+                currentImgSpan.textContent = currentIndex + 1;
+            }
+            
+            // 切换到下一张图片
+            nextBtn.addEventListener('click', function() {
+                if (currentIndex < images.length - 1) {
+                    currentIndex++;
+                    galleryImg.src = images[currentIndex];
+                    updateButtonState();
+                }
+            });
+            
+            // 切换到上一张图片
+            prevBtn.addEventListener('click', function() {
+                if (currentIndex > 0) {
+                    currentIndex--;
+                    galleryImg.src = images[currentIndex];
+                    updateButtonState();
+                }
+            });
+            
+            // 初始化按钮状态
+            updateButtonState();
+
+        // 新增的第二个图片画廊功能
+        const images2 = [
+            '../images/riotfuyuangongju1.png',
+            '../images/riotfuyuangongju2.png'
+            
+
+        ];
+        
+        const galleryImg2 = document.getElementById('gallery-img2');
+        const prevBtn2 = document.getElementById('prev-btn2');
+        const nextBtn2 = document.getElementById('next-btn2');
+        const currentImgSpan2 = document.getElementById('current-img2');
+        const totalImgsSpan2 = document.getElementById('total-imgs2');
+        
+        let currentIndex2 = 0;
+        
+        // 设置总图片数
+        totalImgsSpan2.textContent = images2.length;
+        
+        // 更新按钮状态
+        function updateButtonState2() {
+            prevBtn2.disabled = currentIndex2 === 0;
+            nextBtn2.disabled = currentIndex2 === images2.length - 1;
+            currentImgSpan2.textContent = currentIndex2 + 1;
+        }
+        
+        // 切换到下一张图片
+        nextBtn2.addEventListener('click', function() {
+            if (currentIndex2 < images2.length - 1) {
+                currentIndex2++;
+                galleryImg2.src = images2[currentIndex2];
+                updateButtonState2();
+            }
+        });
+        
+        // 切换到上一张图片
+        prevBtn2.addEventListener('click', function() {
+            if (currentIndex2 > 0) {
+                currentIndex2--;
+                galleryImg2.src = images2[currentIndex2];
+                updateButtonState2();
+            }
+        });
+        
+        // 初始化按钮状态
+        updateButtonState2();
+
+        });
+        
+        // 页面导航功能
+        let currentPage = 1;
+        const totalPages = 2;
+        
+        // 从URL hash或localStorage获取当前页面
+        function getCurrentPageFromStorage() {
+            // 优先从URL hash获取
+            const hash = window.location.hash;
+            if (hash && hash.match(/#page-(\d+)/)) {
+                const pageNum = parseInt(hash.match(/#page-(\d+)/)[1]);
+                if (pageNum >= 1 && pageNum <= totalPages) {
+                    return pageNum;
+                }
+            }
+            
+            // 检查是否是页面跳转（使用sessionStorage标记）
+            const isPageNavigation = sessionStorage.getItem('valorant-page-navigation');
+            if (isPageNavigation) {
+                // 清除跳转标记和当前页面localStorage状态
+                sessionStorage.removeItem('valorant-page-navigation');
+                localStorage.removeItem('valorant-kefulianluo-current-page');
+                return 1; // 跳转时始终返回第一页
+            }
+            
+            // 检查是否是同一会话中的刷新（使用sessionStorage标记页面已访问）
+            const hasVisitedInSession = sessionStorage.getItem('valorant-kefulianluo-visited');
+            if (!hasVisitedInSession) {
+                // 第一次访问此页面（新会话或新标签），标记为已访问并返回第一页
+                sessionStorage.setItem('valorant-kefulianluo-visited', 'true');
+                localStorage.removeItem('valorant-kefulianluo-current-page'); // 清除旧状态
+                return 1;
+            }
+            
+            // 同一会话中的刷新，从localStorage获取状态
+            const savedPage = localStorage.getItem('valorant-kefulianluo-current-page');
+            if (savedPage) {
+                const pageNum = parseInt(savedPage);
+                if (pageNum >= 1 && pageNum <= totalPages) {
+                    return pageNum;
+                }
+            }
+            
+            return 1; // 默认第一页
+        }
+        
+        // 保存当前页面状态
+        function saveCurrentPage(pageNum) {
+            // 保存到URL hash
+            window.location.hash = `page-${pageNum}`;
+            // 保存到localStorage
+            localStorage.setItem('valorant-kefulianluo-current-page', pageNum.toString());
+        }
+        
+        function showPage(pageNum) {
+            // 隐藏所有页面
+            document.querySelectorAll('.page-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // 显示指定页面
+            document.getElementById(`page-${pageNum}`).classList.add('active');
+            
+            // 更新导航按钮状态
+            const prevBtn = document.getElementById('prev-page');
+            const nextBtn = document.getElementById('next-page');
+            
+            if (pageNum === 1) {
+                prevBtn.classList.add('disabled');
+            } else {
+                prevBtn.classList.remove('disabled');
+            }
+            
+            if (pageNum === totalPages) {
+                nextBtn.classList.add('disabled');
+            } else {
+                nextBtn.classList.remove('disabled');
+            }
+            
+            currentPage = pageNum;
+            // 保存当前页面状态
+            saveCurrentPage(pageNum);
+            
+            // 分页切换时置顶
+            setTimeout(() => {
+                window.scrollTo(0, 0);
+                document.documentElement.scrollTop = 0;
+                document.body.scrollTop = 0;
+            }, 50);
+        }
+        
+        // 上一页按钮
+        document.getElementById('prev-page').addEventListener('click', function(e) {
+            e.preventDefault();
+            if (currentPage > 1) {
+                showPage(currentPage - 1);
+            }
+        });
+        
+        // 下一页按钮
+        document.getElementById('next-page').addEventListener('click', function(e) {
+            e.preventDefault();
+            if (currentPage < totalPages) {
+                showPage(currentPage + 1);
+            }
+        });
+        
+        // 键盘导航
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowLeft' && currentPage > 1) {
+                showPage(currentPage - 1);
+            } else if (e.key === 'ArrowRight' && currentPage < totalPages) {
+                showPage(currentPage + 1);
+            }
+        });
+        
+        // 监听hash变化（当用户点击浏览器前进后退按钮时）
+        window.addEventListener('hashchange', function() {
+            const pageNum = getCurrentPageFromStorage();
+            if (pageNum !== currentPage) {
+                showPage(pageNum);
+            }
+        });
+        
+        // 初始化页面导航
+        document.addEventListener('DOMContentLoaded', function() {
+            // 为导航链接添加sessionStorage标记
+            const valorantNavLinks = document.querySelectorAll('.valorant-nav-link');
+            valorantNavLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    sessionStorage.setItem('valorant-page-navigation', 'true');
+                });
+            });
+            
+            // 初始化图片画廊功能
+            const images = [
+                '../images/riotjixinliucheng1.png',
+                '../images/riotjixinliucheng2.png',
+                '../images/riotjixinliucheng3.png',
+                '../images/riotjixinliucheng4.png',
+                '../images/riotjixinliucheng5.png',
+                '../images/riotjixinliucheng6.png',
+                '../images/riotjixinliucheng7.png',
+                '../images/riotjixinliucheng8.png',
+                '../images/riotjixinliucheng9.png'
+            ];
+            
+            const galleryImg = document.getElementById('gallery-img');
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            const currentImgSpan = document.getElementById('current-img');
+            const totalImgsSpan = document.getElementById('total-imgs');
+            
+            let currentIndex = 0;
+            
+            // 设置总图片数
+            totalImgsSpan.textContent = images.length;
+            
+            // 更新按钮状态
+            function updateButtonState() {
+                prevBtn.disabled = currentIndex === 0;
+                nextBtn.disabled = currentIndex === images.length - 1;
+                currentImgSpan.textContent = currentIndex + 1;
+            }
+            
+            // 切换到下一张图片
+            nextBtn.addEventListener('click', function() {
+                if (currentIndex < images.length - 1) {
+                    currentIndex++;
+                    galleryImg.src = images[currentIndex];
+                    updateButtonState();
+                }
+            });
+            
+            // 切换到上一张图片
+            prevBtn.addEventListener('click', function() {
+                if (currentIndex > 0) {
+                    currentIndex--;
+                    galleryImg.src = images[currentIndex];
+                    updateButtonState();
+                }
+            });
+            
+            // 初始化按钮状态
+            updateButtonState();
+            
+            // 第二个图片画廊功能
+            const images2 = [
+                '../images/riotfuyuangongju1.png',
+                '../images/riotfuyuangongju2.png'
+            ];
+            
+            const galleryImg2 = document.getElementById('gallery-img2');
+            const prevBtn2 = document.getElementById('prev-btn2');
+            const nextBtn2 = document.getElementById('next-btn2');
+            const currentImgSpan2 = document.getElementById('current-img2');
+            const totalImgsSpan2 = document.getElementById('total-imgs2');
+            
+            let currentIndex2 = 0;
+            
+            // 设置总图片数
+            totalImgsSpan2.textContent = images2.length;
+            
+            // 更新按钮状态
+            function updateButtonState2() {
+                prevBtn2.disabled = currentIndex2 === 0;
+                nextBtn2.disabled = currentIndex2 === images2.length - 1;
+                currentImgSpan2.textContent = currentIndex2 + 1;
+            }
+            
+            // 切换到下一张图片
+            nextBtn2.addEventListener('click', function() {
+                if (currentIndex2 < images2.length - 1) {
+                    currentIndex2++;
+                    galleryImg2.src = images2[currentIndex2];
+                    updateButtonState2();
+                }
+            });
+            
+            // 切换到上一张图片
+            prevBtn2.addEventListener('click', function() {
+                if (currentIndex2 > 0) {
+                    currentIndex2--;
+                    galleryImg2.src = images2[currentIndex2];
+                    updateButtonState2();
+                }
+            });
+            
+            // 初始化按钮状态
+            updateButtonState2();
+            
+            const savedPage = getCurrentPageFromStorage();
+            showPage(savedPage);
+            
+            // 检查是否需要置顶（页面跳转或新会话访问）
+            const shouldScrollToTop = sessionStorage.getItem('valorant-page-navigation') || 
+                                    !sessionStorage.getItem('valorant-kefulianluo-visited-before-this-load');
+            
+            if (shouldScrollToTop) {
+                // 使用setTimeout确保页面完全加载后再置顶
+                setTimeout(() => {
+                    window.scrollTo(0, 0);
+                    document.documentElement.scrollTop = 0; // 兼容性处理
+                    document.body.scrollTop = 0; // 兼容性处理
+                }, 100);
+                // 标记本次加载已处理
+                sessionStorage.setItem('valorant-kefulianluo-visited-before-this-load', 'true');
+            }
+        });
+    </script>
+</body>
+</html>

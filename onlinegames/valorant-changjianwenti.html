@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <title>特戰英豪 Valorant - 常見問題</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            margin: 0;
+            padding: 0;
+            background: url('../images/beijingtu.jpg') no-repeat center center fixed;
+            background-size: cover;
+            font-family: "Microsoft JhengHei", Arial, sans-serif;
+            color: #fff;
+            min-height: 100vh;
+            position: relative;
+        }
+        
+        .overlay {
+            background: rgba(0, 0, 0, 0.6);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+        
+        .container {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: calc(100% - 40px);
+            max-width: 1160px;
+            z-index: 100;
+        }
+        
+        .header-title {
+            font-size: 1.8rem;
+            color: #ff6633;
+            font-weight: bold;
+        }
+        
+        .header-title span {
+            color: #ff6633;
+        }
+        
+        .main-nav {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .main-nav a {
+            color: #fff;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            transition: background 0.3s;
+        }
+        
+        .main-nav a:hover, .main-nav a.active {
+            background: #ff4655;
+        }
+
+        .back-home {
+            color: #fff;
+            text-decoration: none;
+            padding: 8px 16px;
+            background: #ff4655;
+            border-radius: 4px;
+            transition: background 0.3s;
+        }
+        
+        .back-home:hover {
+            background: #ff6633;
+        }
+        
+        .navbar {
+            display: flex;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 90px;
+            position: fixed;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: calc(100% - 40px);
+            max-width: 1160px;
+            z-index: 99;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+        }
+        
+        .navbar a {
+            color: #fff;
+            text-decoration: none;
+            padding: 10px 20px;
+            margin: 0 10px;
+            border-radius: 4px;
+            transition: background 0.3s;
+        }
+        
+        .navbar a.active {
+            background: #ff4655;
+            font-weight: bold;
+        }
+        
+        .navbar a:hover:not(.active) {
+            background: #ff4655;
+        }
+        
+        .content {
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 8px;
+            padding: 30px;
+            margin-top: 160px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+            position: relative;
+            min-height: 500px;
+        }
+        
+        h2 {
+            color: #ff6633;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #ff4655;
+        }
+        
+        p {
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+        
+        table {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            border-collapse: collapse;
+            margin: 20px 0;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        th, td {
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 12px;
+            text-align: left;
+        }
+        
+        th {
+            background: rgba(255, 70, 85, 0.3);
+            color: #ff6633;
+        }
+        
+        a {
+            color: #ff4655;
+            text-decoration: none;
+        }
+        
+        a:hover {
+            text-decoration: underline;
+        }
+        
+        .note {
+            background: rgba(255, 140, 0, 0.2);
+            border-left: 4px solid #ff6633;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+            font-size: 0.95em;
+        }
+        
+        .page-nav {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 98;
+            display: flex;
+            gap: 15px;
+        }
+        
+        .page-nav a {
+            display: inline-block;
+            padding: 12px 24px;
+            background: #ff4655;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background 0.3s;
+            font-weight: bold;
+        }
+        
+        .page-nav a:hover {
+            background: #ff6633;
+            text-decoration: none;
+        }
+        
+        .page-nav a.disabled {
+            background: #666;
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+        
+        .page-nav a.disabled:hover {
+            background: #666;
+        }
+        
+        .page-section {
+            display: none;
+        }
+        
+        .page-section.active {
+            display: block;
+        }
+        
+        .section {
+            margin-bottom: 40px;
+            padding: 20px;
+            background: rgba(15, 25, 35, 0.5);
+            border-radius: 8px;
+            border-left: 4px solid #ff4655;
+        }
+        
+        .section-title {
+            color: #ff6633;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+        
+        .image-container {
+            margin: 20px 0;
+            border: 2px solid #ff4655;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+        }
+        
+        .image-container img {
+            width: 100%;
+            display: block;
+        }
+
+        .image-container2 img {
+            width: 50%;
+            display: block;
+        }
+
+        .image-container3 img {
+            width: 50%;
+            display: block;
+        }
+        
+        .image-caption {
+            text-align: center;
+            padding: 10px;
+            background: rgba(15, 25, 35, 0.8);
+            font-style: italic;
+            color: #ff6633;
+        }
+        
+        .video-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%;
+            height: 0;
+            margin: 25px 0;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+            border: 2px solid #ff4655;
+        }
+        
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        .video-caption {
+            text-align: center;
+            padding: 10px;
+            background: rgba(15, 25, 35, 0.8);
+            font-style: italic;
+            color: #ff6633;
+            border-radius: 0 0 8px 8px;
+        }
+        
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                text-align: center;
+                padding: 10px;
+            }
+            
+            .header-title {
+                margin-bottom: 10px;
+            }
+            
+            .navbar {
+                flex-wrap: wrap;
+                margin-top: 140px;
+            }
+            
+            .navbar a {
+                margin: 5px;
+                padding: 8px 12px;
+            }
+            
+            .content {
+                margin-top: 200px;
+                padding: 20px;
+            }
+            
+            .page-nav {
+                position: relative;
+                bottom: auto;
+                right: auto;
+                text-align: center;
+                margin-top: 30px;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="overlay"></div>
+    
+    <div class="container">
+        <div class="header">
+            <div class="header-title">特戰英豪 <span>Valorant</span></div>
+        
+        <div class="main-nav">
+        <a href="../index.html">首頁</a>
+        <a href="../onlinegames/xianshangyouxi.html" class="active">線上遊戲</a>
+        <a href="../mobilegames/shoujiyouxi.html">手機遊戲</a>
+        </div>
+        </div>
+
+        <div class="navbar">
+            <a href="../onlinegames/valorant-youxijizhi.html" class="valorant-nav-link">遊戲機制</a>
+            <a href="../onlinegames/valorant-kefulianluo.html" class="valorant-nav-link">客服聯絡</a>
+            <a href="../onlinegames/valorant-youxishuyu.html" class="valorant-nav-link">遊戲術語</a>
+            <a href="#" class="active">常見問題</a>
+            <a href="../onlinegames/valorant-anlishijian.html" class="valorant-nav-link">案例實踐</a>
+        </div>
+        
+        <div class="content">
+            <!-- 第一頁：雙方交易時的注意事項 -->
+            <div class="page-section active" id="page-1">
+                <h2>一、雙方交易時的注意事項</h2>
+            <div class="section">
+                <h3 class="section-title">☠交易時的注意事項</h3>   
+            <p>1、確認買家自己購買的遊戲帳號賣家能否提供初始資料</p>    
+            <p>→主要通過賣家刊登的內容確認，或雙方可通過聊一聊確認</p> 
+            <p>→如果能提供初始資料，盡量越全越好，如：初始信箱、首次初始資料、出生日期、首次儲值記錄等</p> 
+
+
+            <p>2、確認遊戲帳號內的商品是否與刊登相符</p>    
+            <p>→稀有槍支造型套裝</p> 
+            <p>→近戰武器造型</p> 
+            <p>→帳號等級及排位</p>
+            <p>此遊戲販售主要的價值是在槍支、近戰武器造型</p>
+
+            <p>3、確認遊戲帳號的綁定內容及解綁</p>    
+            <p>如遊戲機制裡提到的第三方綁定，不用登入也可以直接移除</p> 
+
+                <div class="image-container">
+                    <img src="../images/riotjiaoyizhuyishixiang1.png">
+                </div>
+
+            </div>
+            </div>
+            
+            <!-- 第二頁：遇到會員反饋各類問題如何處理之提示帳號不相符1 -->
+            <div class="page-section" id="page-2">
+                <h2>二、遇到會員反饋各類問題如何處理</h2>
+                
+            <div class="section">
+                <h3 class="section-title">☠不同問題的應對方式</h3>   
+            <p>1、買家反饋帳號被初始，登入遊戲帳號遊戲提示帳號不相符</p>    
+            <p>→提供截圖（如下面）</p> 
+            <p>我們需要有哪些處理思路呢？</p> 
+
+                <div class="image-container2">
+                    <img src="../images/riotjiaoyizhuyishixiang2.png">
+                </div>
+
+            </div>
+            </div>
+            
+            <!-- 第三頁：遇到會員反饋各類問題如何處理之提示帳號不相符2 -->
+            <div class="page-section" id="page-3">
+                <h2>二、遇到會員反饋各類問題如何處理</h2>
+            <div class="section">
+                <h3 class="section-title">☠不同問題的應對方式</h3>   
+            <p>1、買家反饋帳號被初始，登入遊戲帳號遊戲提示帳號不相符</p>    
+            <p>→提供截圖（如下面）</p> 
+            <p>我們需要有哪些處理思路呢？</p> 
+            <p>①當在遊戲客戶端登入時輸入不正確的密碼，都是提示沒有相符的帳號</p> 
+            <p>②如果是在網頁端登入官網，輸入錯密碼會提示【使用者名稱或密碼錯誤】</p> 
+            <p>③那麼買家應該如何處理？</p> 
+            <p>因此買家在提供此頁面的時候，並不足以判斷是被初始找回，可能存在買家輸入錯密碼，或者確實被盜的可能</p> 
+            <p>更多還是需要以確認是否有收到修改信的通知進行確認</p> 
+
+                <div class="video-caption">以下是客戶端密碼錯誤提示</div>
+                <div class="image-container2">
+                    <img src="../images/riotjiaoyizhuyishixiang2.png">
+                </div>
+                
+                <div class="video-caption">以下是網頁端密碼錯誤提示</div>
+                <div class="image-container2">
+                    <img src="../images/riotjiaoyizhuyishixiang3.png">
+                </div>
+            </div>
+
+            </div>
+
+            <!-- 第四頁：遇到會員反饋各類問題如何處理之收到密碼修改申請通知信1 -->
+            <div class="page-section" id="page-4">
+                <h2>二、遇到會員反饋各類問題如何處理</h2>
+
+            <div class="section">
+                <h3 class="section-title">☠不同問題的應對方式</h3>   
+            <p>2、買家反饋自己綁定的信箱突然收到通知信</p>    
+            <p>→提供截圖（如下面）</p> 
+            <p>我們需要有哪些處理思路呢？</p> 
+                <div class="image-container">
+                    <img src="../images/riotjiaoyizhuyishixiang4.png">
+                </div>
+            </div>
+            </div>
+
+            <!-- 第五頁：遇到會員反饋各類問題如何處理之收到密碼修改申請通知信2 -->
+            <div class="page-section" id="page-5">
+                <h2>二、遇到會員反饋各類問題如何處理</h2>
+
+            <div class="section">
+                <h3 class="section-title">☠不同問題的應對方式</h3>   
+            <p>2、買家反饋自己綁定的信箱突然收到通知信</p>    
+            <p>→提供截圖（如下面）</p> 
+            <p>我們需要有哪些處理思路呢？</p> 
+            <p>①首先需要瞭解此頁面是怎麼出現的？是否跟初始有關</p> 
+            <p>→通過測試：</p>
+            <p>產生此問題，一般是有人在官網點擊【忘記帳密】-【忘記密碼】，輸入【用戶名】之後，系統會發送信件至驗證的信箱內，再透過點擊鏈接去變更帳密</p> 
+            <p>②那麼買家應該如何處理？</p> 
+            <p>→通認帳號密碼是否有被更改？如果沒有</p> 
+            <p>建議啟用帳號登入的雙重驗證（即使用帳號密碼登入時需要信箱驗證），倘若是一手帳主後續通過客服利用初始資料找回，設置也沒有用</p> 
+            <p>→安撫會員</p> 
+            <p>我們可以協助聯絡賣家確認，如果賣家並非一手，就請賣家協助處理，看能不能找到一手賣家提供初始資料，或後續被初始資料找回可以如何協助處理</p> 
+
+                <div class="image-container">
+                    <img src="../images/riotjiaoyizhuyishixiang4.png">
+                </div>
+            </div>
+            </div>
+
+            <!-- 第六頁：遇到會員反饋各類問題如何處理之收到修改通知信1 -->
+            <div class="page-section" id="page-6">
+                <h2>二、遇到會員反饋各類問題如何處理</h2>
+
+                <div class="section">
+                    <h3 class="section-title">☠不同問題的應對方式</h3>   
+                    <p>3、買家反饋帳密被改，並且收到修改信</p>    
+                    <p>→提供截圖（如下面）</p> 
+                    <p>我們需要有哪些處理思路呢？</p> 
+
+                    <div class="image-container3">
+                        <img src="../images/riotjiaoyizhuyishixiang5.png">
+                    </div>
+                </div>
+            </div>
+
+
+
+            <!-- 第七頁：遇到會員反饋各類問題如何處理之收到修改通知信2 -->
+            <div class="page-section" id="page-7">
+                <h2>二、遇到會員反饋各類問題如何處理</h2>
+
+            <div class="section">
+                <h3 class="section-title">☠不同問題的應對方式</h3>   
+            <p>3、買家反饋帳密被改，並且收到修改信</p>    
+            <p>→提供截圖（如下面）</p> 
+            <p>我們需要有哪些處理思路呢？</p> 
+            <p>①通過我們了解的遊戲機制，當到遊戲官網登入帳號之後，可以自行修改信箱，修改成功之後，原信箱就會收到修改信的通知</p>
+            <p>②產生的可能性：</p>
+            <p>→買家自己修改了信箱忘記了，導致有反饋至8591</p>
+            <p>→買家給的圖檔是曾經修改成功信箱的截圖，與此筆交易可能無關</p>
+            <p>→買家的問題，外洩帳密或者訪問來源不明網址，導致被他人盜號</p>
+            <p>→原有賣家的問題，通過第三方登入方式將信箱修改，但可能性很低，因為買家可以自己去移除掉第三方綁定的裝置</p>
+            <p>③那麼買家應該如何處理？</p>
+            <p>可以告知：根據買家反饋的問題，綜合以往交易糾紛的經驗，此問題是通過遊戲官網登入帳號進行修改信箱，原信箱才會收到修改通知信。 </p> 
+            <p style="color: #f44336;font-weight: bold;">如果並非買家個人所為，那帳號應該是被盜了，並且自己未有初始資料的話，建議可以聯絡賣家協商看看是否能協助處理</p> 
+
+
+                <div class="image-container3">
+                    <img src="../images/riotjiaoyizhuyishixiang5.png">
+                </div>
+            </div>
+            </div>
+
+        </div>
+        
+        <div class="page-nav">
+            <a href="#" id="prev-page" class="disabled">&lt;&lt; 上一頁</a>
+            <a href="#" id="next-page">下一頁 &gt;&gt;</a>
+        </div>
+    </div>
+    
+    <script>
+        // 頁面導航功能
+        let currentPage = 1;
+        const totalPages = 7;
+        
+        // 從URL hash或localStorage獲取當前頁面
+        function getCurrentPageFromStorage() {
+            // 優先從URL hash獲取
+            const hash = window.location.hash;
+            if (hash && hash.match(/#page-(\d+)/)) {
+                const pageNum = parseInt(hash.match(/#page-(\d+)/)[1]);
+                if (pageNum >= 1 && pageNum <= totalPages) {
+                    return pageNum;
+                }
+            }
+            
+            // 檢查是否是頁面跳轉（使用sessionStorage標記）
+            const isPageNavigation = sessionStorage.getItem('valorant-page-navigation');
+            if (isPageNavigation) {
+                // 清除跳轉標記和當前頁面localStorage狀態
+                sessionStorage.removeItem('valorant-page-navigation');
+                localStorage.removeItem('valorant-changjianwenti-current-page');
+                return 1; // 跳轉時始終返回第一頁
+            }
+            
+            // 檢查是否是同一會話中的刷新（使用sessionStorage標記頁面已訪問）
+            const hasVisitedInSession = sessionStorage.getItem('valorant-changjianwenti-visited');
+            if (!hasVisitedInSession) {
+                // 第一次訪問此頁面（新會話或新標籤），標記為已訪問並返回第一頁
+                sessionStorage.setItem('valorant-changjianwenti-visited', 'true');
+                localStorage.removeItem('valorant-changjianwenti-current-page'); // 清除舊狀態
+                return 1;
+            }
+            
+            // 同一會話中的刷新，從localStorage獲取狀態
+            const savedPage = localStorage.getItem('valorant-changjianwenti-current-page');
+            if (savedPage) {
+                const pageNum = parseInt(savedPage);
+                if (pageNum >= 1 && pageNum <= totalPages) {
+                    return pageNum;
+                }
+            }
+            
+            return 1; // 默認第一頁
+        }
+        
+        // 保存當前頁面狀態
+        function saveCurrentPage(pageNum) {
+            // 保存到URL hash
+            window.location.hash = `page-${pageNum}`;
+            // 保存到localStorage
+            localStorage.setItem('valorant-changjianwenti-current-page', pageNum.toString());
+        }
+        
+        function showPage(pageNum) {
+            // 隱藏所有頁面
+            document.querySelectorAll('.page-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // 顯示指定頁面
+            document.getElementById(`page-${pageNum}`).classList.add('active');
+            
+            // 更新導航按鈕狀態
+            const prevBtn = document.getElementById('prev-page');
+            const nextBtn = document.getElementById('next-page');
+            
+            if (pageNum === 1) {
+                prevBtn.classList.add('disabled');
+            } else {
+                prevBtn.classList.remove('disabled');
+            }
+            
+            if (pageNum === totalPages) {
+                nextBtn.classList.add('disabled');
+            } else {
+                nextBtn.classList.remove('disabled');
+            }
+            
+            currentPage = pageNum;
+            // 保存當前頁面狀態
+            saveCurrentPage(pageNum);
+            
+            // 分頁切換時置頂
+            setTimeout(() => {
+                window.scrollTo(0, 0);
+                document.documentElement.scrollTop = 0;
+                document.body.scrollTop = 0;
+            }, 50);
+        }
+        
+        // 上一頁按鈕
+        document.getElementById('prev-page').addEventListener('click', function(e) {
+            e.preventDefault();
+            if (currentPage > 1) {
+                showPage(currentPage - 1);
+            }
+        });
+        
+        // 下一頁按鈕
+        document.getElementById('next-page').addEventListener('click', function(e) {
+            e.preventDefault();
+            if (currentPage < totalPages) {
+                showPage(currentPage + 1);
+            }
+        });
+        
+        // 鍵盤導航
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowLeft' && currentPage > 1) {
+                showPage(currentPage - 1);
+            } else if (e.key === 'ArrowRight' && currentPage < totalPages) {
+                showPage(currentPage + 1);
+            }
+        });
+        
+        // 監聽hash變化（當用戶點擊瀏覽器前進後退按鈕時）
+        window.addEventListener('hashchange', function() {
+            const pageNum = getCurrentPageFromStorage();
+            if (pageNum !== currentPage) {
+                showPage(pageNum);
+            }
+        });
+        
+        // 初始化 - 從保存的狀態恢復頁面
+        document.addEventListener('DOMContentLoaded', function() {
+            // 為導航鏈接添加sessionStorage標記
+            const valorantNavLinks = document.querySelectorAll('.valorant-nav-link');
+            valorantNavLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    sessionStorage.setItem('valorant-page-navigation', 'true');
+                });
+            });
+            
+            const savedPage = getCurrentPageFromStorage();
+            showPage(savedPage);
+            
+            // 檢查是否需要置頂（頁面跳轉或新會話訪問）
+            const shouldScrollToTop = sessionStorage.getItem('valorant-page-navigation') || 
+                                    !sessionStorage.getItem('valorant-changjianwenti-visited-before-this-load');
+            
+            if (shouldScrollToTop) {
+                // 使用setTimeout確保頁面完全載入後再置頂
+                setTimeout(() => {
+                    window.scrollTo(0, 0);
+                    document.documentElement.scrollTop = 0; // 兼容性處理
+                    document.body.scrollTop = 0; // 兼容性處理
+                }, 100);
+                // 標記本次加載已處理
+                sessionStorage.setItem('valorant-changjianwenti-visited-before-this-load', 'true');
+            }
+        });
+        
+        // 如果DOM已經加載完成，直接初始化
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', function() {
+                const savedPage = getCurrentPageFromStorage();
+                showPage(savedPage);
+            });
+        } else {
+            const savedPage = getCurrentPageFromStorage();
+            showPage(savedPage);
+        }
+    </script>
+</body>
+</html>

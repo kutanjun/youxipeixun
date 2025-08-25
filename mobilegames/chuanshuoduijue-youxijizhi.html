@@ -1,0 +1,1282 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <title>Garena 傳說對決 - 遊戲機制</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            margin: 0;
+            padding: 0;
+            background: url('../images/beijingtu.jpg') no-repeat center center fixed;
+            background-size: cover;
+            font-family: "Microsoft JhengHei", Arial, sans-serif;
+            color: #fff;
+            min-height: 100vh;
+            position: relative;
+        }
+        
+        .overlay {
+            background: rgba(0, 0, 0, 0.6);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+        
+        .container {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: calc(100% - 40px);
+            max-width: 1160px;
+            z-index: 100;
+        }
+        
+        .header-title {
+            font-size: 1.8rem;
+            color: #ff6633;
+            font-weight: bold;
+        }
+        
+        .header-title span {
+            color: #ff6633;
+        }
+        
+        .main-nav {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .main-nav a {
+            color: #fff;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            transition: background 0.3s;
+        }
+        
+        .main-nav a:hover, .main-nav a.active {
+            background: #ff4655;
+        }
+
+        .back-home {
+            color: #fff;
+            text-decoration: none;
+            padding: 8px 16px;
+            background: #ff4655;
+            border-radius: 4px;
+            transition: background 0.3s;
+        }
+        
+        .back-home:hover {
+            background: #ff6633;
+        }
+        
+        .navbar {
+            display: flex;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 90px;
+            position: fixed;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: calc(100% - 40px);
+            max-width: 1160px;
+            z-index: 99;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+        }
+        
+        .navbar a {
+            color: #fff;
+            text-decoration: none;
+            padding: 10px 20px;
+            margin: 0 10px;
+            border-radius: 4px;
+            transition: background 0.3s;
+        }
+        
+        .navbar a.active {
+            background: #ff4655;
+            font-weight: bold;
+        }
+        
+        .navbar a:hover:not(.active) {
+            background: #ff4655;
+        }
+        
+        .content {
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 8px;
+            padding: 30px;
+            margin-top: 160px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+            position: relative;
+            min-height: 500px;
+        }
+        
+        h2 {
+            color: #ff6633;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #ff4655;
+        }
+        
+        p {
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+        
+        table {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            border-collapse: collapse;
+            margin: 20px 0;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        th, td {
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 12px;
+            text-align: left;
+        }
+        
+        th {
+            background: rgba(255, 70, 85, 0.3);
+            color: #ff6633;
+        }
+        
+        a {
+            color: #ff4655;
+            text-decoration: none;
+        }
+        
+        a:hover {
+            text-decoration: underline;
+        }
+        
+        .note {
+            background: rgba(255, 140, 0, 0.2);
+            border-left: 4px solid #ff6633;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+            font-size: 0.95em;
+        }
+        
+        .page-nav {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 98;
+            display: flex;
+            gap: 15px;
+        }
+        
+        .page-nav a {
+            display: inline-block;
+            padding: 12px 24px;
+            background: #ff4655;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background 0.3s;
+            font-weight: bold;
+        }
+        
+        .page-nav a:hover {
+            background: #ff6633;
+            text-decoration: none;
+        }
+        
+        .page-nav a.disabled {
+            background: #666;
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+        
+        .page-nav a.disabled:hover {
+            background: #666;
+        }
+        
+        .page-section {
+            display: none;
+        }
+        
+        .page-section.active {
+            display: block;
+        }
+        
+        .section {
+            margin-bottom: 40px;
+            padding: 20px;
+            background: rgba(15, 25, 35, 0.5);
+            border-radius: 8px;
+            border-left: 4px solid #ff4655;
+        }
+        
+        .section-title {
+            color: #ff6633;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+        
+        .image-container {
+            margin: 20px 0;
+            border: 2px solid #ff4655;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+        }
+        
+        .image-container img {
+            width: 100%;
+            display: block;
+        }
+        
+        .image-caption {
+            text-align: center;
+            padding: 10px;
+            background: rgba(15, 25, 35, 0.8);
+            font-style: italic;
+            color: #ff6633;
+        }
+        
+        .video-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%;
+            height: 0;
+            margin: 25px 0;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+            border: 2px solid #ff4655;
+        }
+        
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        .video-caption {
+            text-align: center;
+            padding: 10px;
+            background: rgba(15, 25, 35, 0.8);
+            font-style: italic;
+            color: #ff6633;
+            border-radius: 0 0 8px 8px;
+        }
+
+        /* 图片画廊样式 */
+        .image-gallery {
+            position: relative;
+            margin: 20px 0;
+        }
+        
+        .gallery-image {
+            width: 100%;
+            display: block;
+            border: 2px solid #ff4655;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+        }
+        
+        .gallery-image img {
+            width: 100%;
+            display: block;
+        }
+        
+        .gallery-nav {
+            display: flex;
+            justify-content: center;
+            margin-top: 15px;
+            gap: 15px;
+        }
+        
+        .gallery-btn {
+            padding: 8px 16px;
+            background: #ff4655 !important;
+            color: white !important;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.3s;
+            font-weight: bold;
+        }
+        
+        .gallery-btn:hover:not(:disabled) {
+            background: #ff6633 !important;
+        }
+        
+        .gallery-btn:disabled {
+            background: #666 !important;
+            color: white !important;
+            cursor: not-allowed;
+        }
+
+        .gallery-btn:disabled:hover {
+            background: #666 !important;
+        }
+
+        .image-counter {
+            text-align: center;
+            margin-top: 10px;
+            color: #ff6633;
+            font-weight: bold;
+        }
+
+
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                text-align: center;
+                padding: 10px;
+            }
+            
+            .header-title {
+                margin-bottom: 10px;
+            }
+            
+            .navbar {
+                flex-wrap: wrap;
+                margin-top: 140px;
+            }
+            
+            .navbar a {
+                margin: 5px;
+                padding: 8px 12px;
+            }
+            
+            .content {
+                margin-top: 200px;
+                padding: 20px;
+            }
+            
+            .page-nav {
+                position: relative;
+                bottom: auto;
+                right: auto;
+                text-align: center;
+                margin-top: 30px;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="overlay"></div>
+    
+    <div class="container">
+        <div class="header">
+            <div class="header-title">Garena <span>傳說對決</span></div>
+        
+        <div class="main-nav">
+        <a href="../index.html">首頁</a>
+        <a href="../onlinegames/xianshangyouxi.html">線上遊戲</a>
+        <a href="../mobilegames/shoujiyouxi.html" class="active">手機遊戲</a>
+        </div>
+        </div>
+
+        <div class="navbar">
+            <a href="#" class="active">遊戲機制</a>
+            <a href="../mobilegames/chuanshuoduijue-kefulianluo.html">客服聯絡</a>
+            <a href="../mobilegames/chuanshuoduijue-youxishuyu.html">遊戲術語</a>
+            <a href="../mobilegames/chuanshuoduijue-changjianwenti.html">常見問題</a>
+            <a href="../mobilegames/chuanshuoduijue-anlishijian.html">案例實踐</a>
+        </div>
+        
+        <div class="content">
+            <!-- 第一頁：如何註冊及登入 -->
+            <div class="page-section active" id="page-1">
+                <h2>一、如何註冊及登入</h2>
+              <div class="section">
+                <h3 class="section-title">☠註冊及登入流程</h3>   
+                <p>1、Garena官方帳號註冊，而FB、蘋果ID是直接登入，有伺服器可以選擇</p>
+                <div class="image-container">
+                    <img src="../images/chuanshuoduijueyouxijizhi1.png">
+                </div>
+                <p>2、登入時選擇：Apple、Garena、FB中、遊客的一種，安卓手機只有Garena跟FB兩個選一種</p>
+                <div class="image-container">
+                    <img src="../images/chuanshuoduijueyouxijizhi2.png">
+                </div>
+                <p>3、 遊戲介紹</p>
+                <p>定位：Moba、5V5、團戰</p>
+                <p>玩法：每個玩家可選則不同的角色、定位，主要以5V5的模式進行多人即時對戰，通過提升裝備、協作策略等方式，最終與隊友完成幾百對方陣營取得勝利</p>
+                <!-- 傳說對決遊戲視頻 -->
+                <div class="video-caption">以下是傳說對決玩法視頻</div>
+                <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/xpgBgPwNJfY" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+                
+              </div>
+            </div>
+            
+
+
+            <!-- 第二頁：遊戲帳號的綁定相關 -->
+            <div class="page-section" id="page-2">
+                <h2>二、遊戲帳號的綁定相關</h2>
+                
+             <div class="section">
+                <h3 class="section-title">1、不同登入方式的區別</h3>   
+                <div class="image-container">
+                    <img src="../images/chuanshuoduijueyouxijizhi3.png">
+                </div>
+                <h3 class="section-title">2、不同登入方式的影響</h3>
+
+                <p>安卓手機登入有Garena、FB、Line、google四種方式可登入；蘋果手機登入有Garena、FB、Apple ID、Line、google、遊客六種方式登入</p>
+                <p>若Garena與FB連接一起，並且FB為空號，那麼在Garena創建角色之後，不管使用Garena登入，還是FB登入，都會進入相同遊戲角色</p>
+                <p>若FB已經有單獨創建過角色，即使綁定Garena一起，也是2個獨立開來的帳號</p>
+                <div class="no-wrap" style="color: #f44336;">【專業術語】<span style="color: #fff;">若FB已停用，交易時無法連同FB提供給買家，通常叫臉書斷連</span></div>
+                <!-- 修改为同行显示 -->
+                <h3 class="section-title">3、註冊條件的限制</h3>
+                <div class="no-wrap">現有的Garena註冊條件當中，是必須要填寫【信箱】才能註冊成功，那麼是怎麼出現無綁無連的帳號？
+                    <span class="inline-link">
+                        <a href="https://www.8591.com.tw/v3/mall/list/21738?searchGame=21738&searchType=2&searchKey=%E7%84%A1%E7%B6%81" target="_blank">【查看連結】</a>
+                    </span>
+                </div>
+                <p>【原因】在《傳說對決》早期版本（2017-2019年期間），允許通過“遊客模式”或“快速註冊”直接生成帳號（僅需用戶名+密碼），無需強制綁定郵箱而後續於2020年逐步調整註冊規則，才有要求新帳戶必須綁定信箱，如果該帳號未去綁定信箱或手機，理論上應該是無法更改密碼</p>
+                
+                <h3 class="section-title">4、Garena有哪些安全設定？</h3>
+                <div class="image-container">
+                    <img src="../images/chuanshuoduijueyouxijizhi4.png">
+                </div>
+
+                <h3 class="section-title">5、如何修改密碼</h3>
+                <p>修改流程：</p>
+                <p>1、帳戶中心-安全https://account.garena.com/</p>
+                <p>2、變更密碼>>通過電子信箱/手機號碼（有綁定的話）獲取驗證</p>
+                <div class="image-container">
+                    <img src="../images/chuanshuoduijueyouxijizhi5.png">
+                </div>
+
+                <h3 class="section-title">6、Garena帳號忘記密碼如何找回</h3>
+                <p>①填寫 email/帳號 or 手機號碼</p>
+                <p>②選擇驗證方式 email（提示首位） or 手機號碼（提示末兩位）or帳號（提示前後各2位）</p>
+                <p>即帳號、信箱、手機需明確知道2種，會提示部分信息（參考判斷）</p>
+                <p>● 例：填寫帳號>>驗證可選信箱或手機任一接收驗證碼</p>
+                <p>● 填寫信箱>>驗證可填帳號或手機，再接收驗證碼（填帳號時驗證碼會發送至信箱）</p>
+                <p>③曾用FB登入Garena，可用FB修改密碼（僅遊戲內頁面顯示）</p>
+                <p>● 仍需要填郵箱或電話來接收驗證碼（FB替代了帳號填寫這步</p>
+
+                <!-- 第一個图片画廊 -->
+                <div class="image-gallery">
+                    <div class="gallery-image">
+                        <img id="gallery-img" src="../images/chuanshuoduijuezhaohuimima1.png" alt="寄信流程步骤图">
+                    </div>
+                    <div class="image-counter">
+                        <span id="current-img">1</span> / <span id="total-imgs">4</span>
+                    </div>
+                    <div class="gallery-nav">
+                        <button class="gallery-btn" id="prev-btn" disabled>上一張</button>
+                        <button class="gallery-btn" id="next-btn">下一張</button>
+                    </div>
+                </div>
+
+                <h3 class="section-title">7、Garena帳號綁定過FB也可以找回密碼</h3>
+                <p>曾用FB登入Garena，可用FB修改密碼（僅遊戲內頁面顯示）</p>
+                <p>● 仍需要填郵箱或電話來接收驗證碼（FB替代了帳號填寫這步）</p>
+
+                <!-- 第二個图片画廊 -->
+                <div class="image-gallery">
+                    <div class="gallery-image">
+                        <img id="gallery-img2" src="../images/chuanshuoduijuezhaohuimima5.png" alt="FB找回密碼步驟">
+                    </div>
+                    <div class="image-counter">
+                        <span id="current-img2">1</span> / <span id="total-imgs2">5</span>
+                    </div>
+                    <div class="gallery-nav">
+                        <button class="gallery-btn" id="prev-btn2" disabled>上一張</button>
+                        <button class="gallery-btn" id="next-btn2">下一張</button>
+                    </div>
+                </div>
+                </div>
+            </div>
+
+            <!-- 第三頁：FB的註冊流程 -->
+            <div class="page-section" id="page-3">
+                <h2>三、FB帳號相關說明</h2>
+
+                <div class="section">
+                    <p style="color: #f44336;">☠重點說明</p>   
+                <p>為什麼會將FB帳號的註冊及登入方式進行特別說明，主要是以前Garena帳號可以跟FB連結，在有綁定FB帳號的情況下，會影響Garena帳號的使用安全</p>       
+                <h3 class="section-title">8、FB的註冊流程</h3>   
+                <p>①什麼是FB？</p>
+                <p>FB是指臉書的一個社交平台，台灣地區的遊戲，大部分可以使用臉書帳號去登入遊戲，屬於第三方平台</p>
+                <p>②FB是如何註冊的？</p>
+                <p>FB註冊流程比較簡單：</p>
+                <p>→輸入註冊姓名</p>
+                <p>→選擇出生日期</p>
+                <p>→選擇性別</p>
+                <p>→輸入註冊的信箱及密碼</p>
+                <p>→獲取對應信箱驗證碼即可註冊成功</p>
+                <p style="color: #f44336;">③為什麼FB登入的，要整組移交帳號呢？</p>
+                <p>註冊FB的時候，填寫的信箱是登入的媒介，如果受登入影響，可能需要獲取信箱的驗證碼，則還要去對應信箱渠道去查看驗證碼</p>
+                <p>參考註冊的第二步，就需要獲取信箱驗證碼，如果賣家移交時，沒有移交整組信箱資料，買家的登入可能會有安全隱患</p>
+                </div>
+
+                <!-- 图片画廊 -->
+                <div class="video-caption">以下是FB帳號的註冊流程圖</div>
+                <div class="image-gallery">
+                    <div class="gallery-image">
+                        <img id="gallery-img3" src="../images/chuanshuoduijuefb1.png" alt="FB的註冊流程">
+                    </div>
+                    <div class="image-counter">
+                        <span id="current-img3">1</span> / <span id="total-imgs3">3</span>
+                    </div>
+
+                    <div class="gallery-nav">
+                        <button class="gallery-btn" id="prev-btn3" disabled>上一張</button>
+                        <button class="gallery-btn" id="next-btn3">下一張</button>
+                    </div>
+                </div>
+
+                <h3 class="section-title">9、賣家移交FB資料後，買家應該做哪些資料的修改確保自己的帳號安全？</h3>
+                <p>買家需要進行兩步修改驗證，即修改FB帳號的登入驗證資料，以及登入信箱的相關資料</p>
+                <p>第一步：登入FB帳號，添加相關綁定的資料</p>
+                <p>以手機版FB參考為例：</p>
+                <p>①登入至FB點擊設定，在帳戶中心-個人詳情-聯絡方式</p>
+                <p>移除原本有的聯絡方式，重新添加屬於買家自己的聯絡電話或信箱</p>
+                <p>②在密碼和安全的選項中，查看是否有啟用雙重驗證</p>
+                <p>若是，可以移除原本的WhatsApp驗證，添加買家自己的WhatsApp驗證</p>
+                <p>第二步：確認好登確認好登入的信箱是哪一類信箱</p>
+                <p>以微軟信箱為例：</p>
+                <p>1.登入至微軟信箱個人資料</p>
+                <p>2.將原本的個人資料進行修改，特別是【帳戶信息】，如果原本賣家有添加自己的其他備用信箱，需要移除，買家可以添加屬於自己的備用登入信箱</p>
+                <p>3.甚至可以在帳戶【安全】中，添加更多登入選項，以防帳號被盜</p>
+                <p style="color: #f44336;">其他信箱登入的種類較多，修改流程也會有所不一樣，我們就主要提醒買家自行去更改了</p>
+
+                <!-- 第四个图片画廊 -->
+                <div class="image-gallery">
+                    <div class="gallery-image">
+                        <img id="gallery-img4" src="../images/chuanshuoduijuefb4.png" alt="FB信箱修改流程步驟">
+                    </div>
+                    <div class="image-counter">
+                        <span id="current-img4">1</span> / <span id="total-imgs4">5</span>
+                    </div>
+                    <div class="gallery-nav">
+                        <button class="gallery-btn" id="prev-btn4" disabled>上一張</button>
+                        <button class="gallery-btn" id="next-btn4">下一張</button>
+                    </div>
+                </div>
+
+                <h3 class="section-title">10、FB的帳號是否能進行修改？</h3>
+                <p>理論上是可以進行修改的，主要邏輯是通過添加其他帳號，再刪掉現有的帳號，就可以用新的帳號去登入了</p>
+                <p style="color: #f44336;">但此方法暫時未通過實際的驗證，因此我們不主動轉達給會員</p>
+                <p>以下是理論的修改FB帳號的步驟，僅為參考！！！</p>
+                <p>第一步：登入FB帳號，添加相關綁定的資料</p>
+                <p>以電腦版FB參考為例：</p>
+                <p>1.登入至FB點擊設定和隱私-設定，在帳戶管理中心點擊【個人資料】</p>
+                <p>2.選擇【個人檔案】，點擊新增帳號-Meta帳號</p>
+                <p>3.添加一組新的郵箱，來作為登入的媒介</p>
+                <p>如果此信箱是未註冊的，系統可能會提醒你要註冊</p>
+                <p>第二步：添加成功之後，就可以嘗試用新的信箱看能否登入此帳號如果可以，後續也可以嘗試刪除原本的信箱了，繼而來實現</p>
+                <p style="color: #f44336;">【溫馨提醒】</p>
+                <p>因此方案暫時無法透過實踐來驗證可行性，每次註冊新的FB帳號時都被永久封鎖，導致實踐的步驟有產生困難，所以主要是通過AI+已看到的界面來進行推測</p>
+
+                <!-- 第五个图片画廊 -->
+                <div class="image-gallery">
+                    <div class="gallery-image">
+                        <img id="gallery-img5" src="../images/chuanshuoduijuefb9.png" alt="FB帳號封鎖相關步驟">
+                    </div>
+                    <div class="image-counter">
+                        <span id="current-img5">1</span> / <span id="total-imgs5">4</span>
+                    </div>
+                    <div class="gallery-nav">
+                        <button class="gallery-btn" id="prev-btn5" disabled>上一張</button>
+                        <button class="gallery-btn" id="next-btn5">下一張</button>
+                    </div>
+                </div>
+
+            </div>
+            
+
+
+
+        </div><!-- content的結尾 -->
+            
+        </div>
+        
+        <div class="page-nav">
+            <a href="#" id="prev-page" class="disabled">&lt;&lt; 上一頁</a>
+            <a href="#" id="next-page">下一頁 &gt;&gt;</a>
+        </div>
+    </div>
+    
+    <script>
+
+        // 页面导航功能
+        let currentPage = 1;
+        const totalPages = 3;
+
+        // 第一個图片画廊功能
+        document.addEventListener('DOMContentLoaded', function() {
+            const images = [
+                '../images/chuanshuoduijuezhaohuimima1.png',
+                '../images/chuanshuoduijuezhaohuimima2.png',
+                '../images/chuanshuoduijuezhaohuimima3.png',
+                '../images/chuanshuoduijuezhaohuimima4.png',
+            ];
+            
+            const galleryImg = document.getElementById('gallery-img');
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            const currentImgSpan = document.getElementById('current-img');
+            const totalImgsSpan = document.getElementById('total-imgs');
+            
+            let currentIndex = 0;
+            
+            // 设置总图片数
+            totalImgsSpan.textContent = images.length;
+            
+            // 更新按钮状态
+            function updateButtonState() {
+                prevBtn.disabled = currentIndex === 0;
+                nextBtn.disabled = currentIndex === images.length - 1;
+                currentImgSpan.textContent = currentIndex + 1;
+            }
+            
+            // 切换到下一张图片
+            nextBtn.addEventListener('click', function() {
+                if (currentIndex < images.length - 1) {
+                    currentIndex++;
+                    galleryImg.src = images[currentIndex];
+                    updateButtonState();
+                }
+            });
+            
+            // 切换到上一张图片
+            prevBtn.addEventListener('click', function() {
+                if (currentIndex > 0) {
+                    currentIndex--;
+                    galleryImg.src = images[currentIndex];
+                    updateButtonState();
+                }
+            });
+            
+            // 初始化按钮状态
+            updateButtonState();
+
+        // 新增的第二个图片画廊功能
+        const images2 = [
+                '../images/chuanshuoduijuezhaohuimima5.png',
+                '../images/chuanshuoduijuezhaohuimima6.png',
+                '../images/chuanshuoduijuezhaohuimima7.png',
+                '../images/chuanshuoduijuezhaohuimima8.png',
+                '../images/chuanshuoduijuezhaohuimima9.png'
+            
+
+        ];
+        
+        const galleryImg2 = document.getElementById('gallery-img2');
+        const prevBtn2 = document.getElementById('prev-btn2');
+        const nextBtn2 = document.getElementById('next-btn2');
+        const currentImgSpan2 = document.getElementById('current-img2');
+        const totalImgsSpan2 = document.getElementById('total-imgs2');
+        
+        let currentIndex2 = 0;
+        
+        // 设置总图片数
+        totalImgsSpan2.textContent = images2.length;
+        
+        // 更新按钮状态
+        function updateButtonState2() {
+            prevBtn2.disabled = currentIndex2 === 0;
+            nextBtn2.disabled = currentIndex2 === images2.length - 1;
+            currentImgSpan2.textContent = currentIndex2 + 1;
+        }
+        
+        // 切换到下一张图片
+        nextBtn2.addEventListener('click', function() {
+            if (currentIndex2 < images2.length - 1) {
+                currentIndex2++;
+                galleryImg2.src = images2[currentIndex2];
+                updateButtonState2();
+            }
+        });
+        
+        // 切换到上一张图片
+        prevBtn2.addEventListener('click', function() {
+            if (currentIndex2 > 0) {
+                currentIndex2--;
+                galleryImg2.src = images2[currentIndex2];
+                updateButtonState2();
+            }
+        });
+        
+        // 初始化按钮状态
+        updateButtonState2();
+
+        // 新增的第三个图片画廊功能
+        const images3 = [
+                '../images/chuanshuoduijuefb1.png',
+                '../images/chuanshuoduijuefb2.png',
+                '../images/chuanshuoduijuefb3.png'
+
+        ];
+        
+        const galleryImg3 = document.getElementById('gallery-img3');
+        const prevBtn3 = document.getElementById('prev-btn3');
+        const nextBtn3 = document.getElementById('next-btn3');
+        const currentImgSpan3 = document.getElementById('current-img3');
+        const totalImgsSpan3 = document.getElementById('total-imgs3');
+        
+        let currentIndex3 = 0;
+        
+        // 设置总图片数
+        totalImgsSpan3.textContent = images3.length;
+        
+        // 更新按钮状态
+        function updateButtonState3() {
+            prevBtn3.disabled = currentIndex3 === 0;
+            nextBtn3.disabled = currentIndex3 === images3.length - 1;
+            currentImgSpan3.textContent = currentIndex3 + 1;
+        }
+        
+        // 切换到下一张图片
+        nextBtn3.addEventListener('click', function() {
+            if (currentIndex3 < images3.length - 1) {
+                currentIndex3++;
+                galleryImg3.src = images3[currentIndex3];
+                updateButtonState3();
+            }
+        });
+        
+        // 切换到上一张图片
+        prevBtn3.addEventListener('click', function() {
+            if (currentIndex3 > 0) {
+                currentIndex3--;
+                galleryImg3.src = images3[currentIndex3];
+                updateButtonState3();
+            }
+        });
+        
+        // 初始化按钮状态
+        updateButtonState3();
+
+        // 新增的第四个图片画廊功能
+        const images4 = [
+                '../images/chuanshuoduijuefb4.png',
+                '../images/chuanshuoduijuefb5.png',
+                '../images/chuanshuoduijuefb6.png',
+                '../images/chuanshuoduijuefb7.png',
+                '../images/chuanshuoduijuefb8.png'
+        ];
+        
+        const galleryImg4 = document.getElementById('gallery-img4');
+        const prevBtn4 = document.getElementById('prev-btn4');
+        const nextBtn4 = document.getElementById('next-btn4');
+        const currentImgSpan4 = document.getElementById('current-img4');
+        const totalImgsSpan4 = document.getElementById('total-imgs4');
+        
+        let currentIndex4 = 0;
+        
+        // 设置总图片数
+        totalImgsSpan4.textContent = images4.length;
+        
+        // 更新按钮状态
+        function updateButtonState4() {
+            prevBtn4.disabled = currentIndex4 === 0;
+            nextBtn4.disabled = currentIndex4 === images4.length - 1;
+            currentImgSpan4.textContent = currentIndex4 + 1;
+        }
+        
+        // 切换到下一张图片
+        nextBtn4.addEventListener('click', function() {
+            if (currentIndex4 < images4.length - 1) {
+                currentIndex4++;
+                galleryImg4.src = images4[currentIndex4];
+                updateButtonState4();
+            }
+        });
+        
+        // 切换到上一张图片
+        prevBtn4.addEventListener('click', function() {
+            if (currentIndex4 > 0) {
+                currentIndex4--;
+                galleryImg4.src = images4[currentIndex4];
+                updateButtonState4();
+            }
+        });
+        
+        // 初始化按钮状态
+        updateButtonState4();
+
+        // 新增的第五个图片画廊功能
+        const images5 = [
+                '../images/chuanshuoduijuefb9.png',
+                '../images/chuanshuoduijuefb10.png',
+                '../images/chuanshuoduijuefb11.png',
+                '../images/chuanshuoduijuefb12.png'
+        ];
+        
+        const galleryImg5 = document.getElementById('gallery-img5');
+        const prevBtn5 = document.getElementById('prev-btn5');
+        const nextBtn5 = document.getElementById('next-btn5');
+        const currentImgSpan5 = document.getElementById('current-img5');
+        const totalImgsSpan5 = document.getElementById('total-imgs5');
+        
+        let currentIndex5 = 0;
+        
+        // 设置总图片数
+        totalImgsSpan5.textContent = images5.length;
+        
+        // 更新按钮状态
+        function updateButtonState5() {
+            prevBtn5.disabled = currentIndex5 === 0;
+            nextBtn5.disabled = currentIndex5 === images5.length - 1;
+            currentImgSpan5.textContent = currentIndex5 + 1;
+        }
+        
+        // 切换到下一张图片
+        nextBtn5.addEventListener('click', function() {
+            if (currentIndex5 < images5.length - 1) {
+                currentIndex5++;
+                galleryImg5.src = images5[currentIndex5];
+                updateButtonState5();
+            }
+        });
+        
+        // 切换到上一张图片
+        prevBtn5.addEventListener('click', function() {
+            if (currentIndex5 > 0) {
+                currentIndex5--;
+                galleryImg5.src = images5[currentIndex5];
+                updateButtonState5();
+            }
+        });
+        
+        // 初始化按钮状态
+        updateButtonState5();
+
+
+        });
+        
+
+        
+
+        
+        // 从URL hash或localStorage获取当前页面
+        function getCurrentPageFromStorage() {
+            // 优先从URL hash获取
+            const hash = window.location.hash;
+            if (hash && hash.match(/#page-(\d+)/)) {
+                const pageNum = parseInt(hash.match(/#page-(\d+)/)[1]);
+                if (pageNum >= 1 && pageNum <= totalPages) {
+                    return pageNum;
+                }
+            }
+            
+            // 检查是否是页面跳转（使用sessionStorage标记）
+            const isPageNavigation = sessionStorage.getItem('chuanshuoduijue-page-navigation');
+            if (isPageNavigation) {
+                // 清除跳转标记和当前页面localStorage状态
+                sessionStorage.removeItem('chuanshuoduijue-page-navigation');
+                localStorage.removeItem('chuanshuoduijue-kefulianluo-current-page');
+                return 1; // 跳转时始终返回第一页
+            }
+            
+            // 检查是否是同一会话中的刷新（使用sessionStorage标记页面已访问）
+            const hasVisitedInSession = sessionStorage.getItem('chuanshuoduijue-kefulianluo-visited');
+            if (!hasVisitedInSession) {
+                // 第一次访问此页面（新会话或新标签），标记为已访问并返回第一页
+                sessionStorage.setItem('chuanshuoduijue-kefulianluo-visited', 'true');
+                localStorage.removeItem('chuanshuoduijue-kefulianluo-current-page'); // 清除旧状态
+                return 1;
+            }
+            
+            // 同一会话中的刷新，从localStorage获取状态
+            const savedPage = localStorage.getItem('chuanshuoduijue-kefulianluo-current-page');
+            if (savedPage) {
+                const pageNum = parseInt(savedPage);
+                if (pageNum >= 1 && pageNum <= totalPages) {
+                    return pageNum;
+                }
+            }
+            
+            return 1; // 默认第一页
+        }
+        
+        // 保存当前页面状态
+        function saveCurrentPage(pageNum) {
+            // 保存到URL hash
+            window.location.hash = `page-${pageNum}`;
+            // 保存到localStorage
+            localStorage.setItem('chuanshuoduijue-youxijizhi-current-page', pageNum.toString());
+        }
+        
+        function showPage(pageNum) {
+            // 隐藏所有页面
+            document.querySelectorAll('.page-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // 显示指定页面
+            document.getElementById(`page-${pageNum}`).classList.add('active');
+            
+            // 更新导航按钮状态
+            const prevBtn = document.getElementById('prev-page');
+            const nextBtn = document.getElementById('next-page');
+            
+            if (pageNum === 1) {
+                prevBtn.classList.add('disabled');
+            } else {
+                prevBtn.classList.remove('disabled');
+            }
+            
+            if (pageNum === totalPages) {
+                nextBtn.classList.add('disabled');
+            } else {
+                nextBtn.classList.remove('disabled');
+            }
+            
+            currentPage = pageNum;
+            // 保存当前页面状态
+            saveCurrentPage(pageNum);
+            
+            // 分页切换时置顶
+            setTimeout(() => {
+                window.scrollTo(0, 0);
+                document.documentElement.scrollTop = 0;
+                document.body.scrollTop = 0;
+            }, 50);
+        }
+        
+        // 上一页按钮
+        document.getElementById('prev-page').addEventListener('click', function(e) {
+            e.preventDefault();
+            if (currentPage > 1) {
+                showPage(currentPage - 1);
+            }
+        });
+        
+        // 下一页按钮
+        document.getElementById('next-page').addEventListener('click', function(e) {
+            e.preventDefault();
+            if (currentPage < totalPages) {
+                showPage(currentPage + 1);
+            }
+        });
+        
+        // 键盘导航
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowLeft' && currentPage > 1) {
+                showPage(currentPage - 1);
+            } else if (e.key === 'ArrowRight' && currentPage < totalPages) {
+                showPage(currentPage + 1);
+            }
+        });
+        
+        // 监听hash变化（当用户点击浏览器前进后退按钮时）
+        window.addEventListener('hashchange', function() {
+            const pageNum = getCurrentPageFromStorage();
+            if (pageNum !== currentPage) {
+                showPage(pageNum);
+            }
+        });
+        
+        // 初始化页面导航
+        document.addEventListener('DOMContentLoaded', function() {
+            // 为导航链接添加sessionStorage标记
+            const chuanshuoduijueNavLinks = document.querySelectorAll('.chuanshuoduijue-nav-link');
+            chuanshuoduijueNavLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    sessionStorage.setItem('chuanshuoduijue-page-navigation', 'true');
+                });
+            });
+            
+            // 初始化图片画廊功能
+            const images = [
+                '../images/chuanshuoduijuezhaohuimima1.png',
+                '../images/chuanshuoduijuezhaohuimima2.png',
+                '../images/chuanshuoduijuezhaohuimima3.png',
+                '../images/chuanshuoduijuezhaohuimima4.png'
+            ];
+            
+            const galleryImg = document.getElementById('gallery-img');
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            const currentImgSpan = document.getElementById('current-img');
+            const totalImgsSpan = document.getElementById('total-imgs');
+            
+            let currentIndex = 0;
+            
+            // 设置总图片数
+            totalImgsSpan.textContent = images.length;
+            
+            // 更新按钮状态
+            function updateButtonState() {
+                prevBtn.disabled = currentIndex === 0;
+                nextBtn.disabled = currentIndex === images.length - 1;
+                currentImgSpan.textContent = currentIndex + 1;
+            }
+            
+            // 切换到下一张图片
+            nextBtn.addEventListener('click', function() {
+                if (currentIndex < images.length - 1) {
+                    currentIndex++;
+                    galleryImg.src = images[currentIndex];
+                    updateButtonState();
+                }
+            });
+            
+            // 切换到上一张图片
+            prevBtn.addEventListener('click', function() {
+                if (currentIndex > 0) {
+                    currentIndex--;
+                    galleryImg.src = images[currentIndex];
+                    updateButtonState();
+                }
+            });
+            
+            // 初始化按钮状态
+            updateButtonState();
+            
+            // 第二个图片画廊功能
+            const images2 = [
+                '../images/chuanshuoduijuezhaohuimima5.png',
+                '../images/chuanshuoduijuezhaohuimima6.png',
+                '../images/chuanshuoduijuezhaohuimima7.png',
+                '../images/chuanshuoduijuezhaohuimima8.png',
+                '../images/chuanshuoduijuezhaohuimima9.png'
+            ];
+            
+            const galleryImg2 = document.getElementById('gallery-img2');
+            const prevBtn2 = document.getElementById('prev-btn2');
+            const nextBtn2 = document.getElementById('next-btn2');
+            const currentImgSpan2 = document.getElementById('current-img2');
+            const totalImgsSpan2 = document.getElementById('total-imgs2');
+            
+            let currentIndex2 = 0;
+            
+            // 设置总图片数
+            totalImgsSpan2.textContent = images2.length;
+            
+            // 更新按钮状态
+            function updateButtonState2() {
+                prevBtn2.disabled = currentIndex2 === 0;
+                nextBtn2.disabled = currentIndex2 === images2.length - 1;
+                currentImgSpan2.textContent = currentIndex2 + 1;
+            }
+            
+            // 切换到下一张图片
+            nextBtn2.addEventListener('click', function() {
+                if (currentIndex2 < images2.length - 1) {
+                    currentIndex2++;
+                    galleryImg2.src = images2[currentIndex2];
+                    updateButtonState2();
+                }
+            });
+            
+            // 切换到上一张图片
+            prevBtn2.addEventListener('click', function() {
+                if (currentIndex2 > 0) {
+                    currentIndex2--;
+                    galleryImg2.src = images2[currentIndex2];
+                    updateButtonState2();
+                }
+            });
+            
+            // 初始化按钮状态
+            updateButtonState2();
+            
+            // 第四个图片画廊功能
+            const images4 = [
+                '../images/chuanshuoduijuefb4.png',
+                '../images/chuanshuoduijuefb5.png',
+                '../images/chuanshuoduijuefb6.png',
+                '../images/chuanshuoduijuefb7.png',
+                '../images/chuanshuoduijuefb8.png'
+            ];
+            
+            const galleryImg4 = document.getElementById('gallery-img4');
+            const prevBtn4 = document.getElementById('prev-btn4');
+            const nextBtn4 = document.getElementById('next-btn4');
+            const currentImgSpan4 = document.getElementById('current-img4');
+            const totalImgsSpan4 = document.getElementById('total-imgs4');
+            
+            let currentIndex4 = 0;
+            
+            // 设置总图片数
+            totalImgsSpan4.textContent = images4.length;
+            
+            // 更新按钮状态
+            function updateButtonState4() {
+                prevBtn4.disabled = currentIndex4 === 0;
+                nextBtn4.disabled = currentIndex4 === images4.length - 1;
+                currentImgSpan4.textContent = currentIndex4 + 1;
+            }
+            
+            // 切换到下一张图片
+            nextBtn4.addEventListener('click', function() {
+                if (currentIndex4 < images4.length - 1) {
+                    currentIndex4++;
+                    galleryImg4.src = images4[currentIndex4];
+                    updateButtonState4();
+                }
+            });
+            
+            // 切换到上一张图片
+            prevBtn4.addEventListener('click', function() {
+                if (currentIndex4 > 0) {
+                    currentIndex4--;
+                    galleryImg4.src = images4[currentIndex4];
+                    updateButtonState4();
+                }
+            });
+            
+            // 初始化按钮状态
+            updateButtonState4();
+            
+            // 第五个图片画廊功能
+            const images5 = [
+                '../images/chuanshuoduijuefb9.png',
+                '../images/chuanshuoduijuefb10.png',
+                '../images/chuanshuoduijuefb11.png',
+                '../images/chuanshuoduijuefb12.png'
+            ];
+            
+            const galleryImg5 = document.getElementById('gallery-img5');
+            const prevBtn5 = document.getElementById('prev-btn5');
+            const nextBtn5 = document.getElementById('next-btn5');
+            const currentImgSpan5 = document.getElementById('current-img5');
+            const totalImgsSpan5 = document.getElementById('total-imgs5');
+            
+            let currentIndex5 = 0;
+            
+            // 设置总图片数
+            totalImgsSpan5.textContent = images5.length;
+            
+            // 更新按钮状态
+            function updateButtonState5() {
+                prevBtn5.disabled = currentIndex5 === 0;
+                nextBtn5.disabled = currentIndex5 === images5.length - 1;
+                currentImgSpan5.textContent = currentIndex5 + 1;
+            }
+            
+            // 切换到下一张图片
+            nextBtn5.addEventListener('click', function() {
+                if (currentIndex5 < images5.length - 1) {
+                    currentIndex5++;
+                    galleryImg5.src = images5[currentIndex5];
+                    updateButtonState5();
+                }
+            });
+            
+            // 切换到上一张图片
+            prevBtn5.addEventListener('click', function() {
+                if (currentIndex5 > 0) {
+                    currentIndex5--;
+                    galleryImg5.src = images5[currentIndex5];
+                    updateButtonState5();
+                }
+            });
+            
+            // 初始化按钮状态
+            updateButtonState5();
+
+            // 第三个图片画廊功能
+            const images3 = [
+                '../images/chuanshuoduijuefb1.png',
+                '../images/chuanshuoduijuefb2.png',
+                '../images/chuanshuoduijuefb3.png'
+            ];
+            
+            const galleryImg3 = document.getElementById('gallery-img3');
+            const prevBtn3 = document.getElementById('prev-btn3');
+            const nextBtn3 = document.getElementById('next-btn3');
+            const currentImgSpan3 = document.getElementById('current-img3');
+            const totalImgsSpan3 = document.getElementById('total-imgs3');
+            
+            let currentIndex3 = 0;
+            
+            // 设置总图片数
+            totalImgsSpan3.textContent = images3.length;
+            
+            // 更新按钮状态
+            function updateButtonState3() {
+                prevBtn3.disabled = currentIndex3 === 0;
+                nextBtn3.disabled = currentIndex3 === images3.length - 1;
+                currentImgSpan3.textContent = currentIndex3 + 1;
+            }
+            
+            // 切换到下一张图片
+            nextBtn3.addEventListener('click', function() {
+                if (currentIndex3 < images3.length - 1) {
+                    currentIndex3++;
+                    galleryImg3.src = images3[currentIndex3];
+                    updateButtonState3();
+                }
+            });
+            
+            // 切换到上一张图片
+            prevBtn3.addEventListener('click', function() {
+                if (currentIndex3 > 0) {
+                    currentIndex3--;
+                    galleryImg3.src = images3[currentIndex3];
+                    updateButtonState3();
+                }
+            });
+            
+            // 初始化按钮状态
+            updateButtonState3();
+            
+            const savedPage = getCurrentPageFromStorage();
+            showPage(savedPage);
+            
+            // 检查是否需要置顶（页面跳转或新会话访问）
+            const shouldScrollToTop = sessionStorage.getItem('chuanshuoduijue-page-navigation') || 
+                                    !sessionStorage.getItem('chuanshuoduijue-youxijizhi1-visited-before-load');
+            
+            if (shouldScrollToTop) {
+                // 使用setTimeout确保页面完全加载后再置顶
+                setTimeout(() => {
+                    window.scrollTo(0, 0);
+                    document.documentElement.scrollTop = 0; // 兼容性处理
+                    document.body.scrollTop = 0; // 兼容性处理
+                }, 100);
+                // 标记本次加载已处理
+                sessionStorage.setItem('chuanshuoduijue-youxijizhi1-visited-before-load', 'true');
+            }
+        });
+
+        
+    </script>
+</body>
+</html>
